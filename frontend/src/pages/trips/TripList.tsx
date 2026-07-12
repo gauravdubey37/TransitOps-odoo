@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api';
-import { Trip, Driver, Vehicle } from '../../types';
+import type { Trip, Driver, Vehicle } from '../../types';
 import { DataTable } from '../../components/shared/DataTable';
 import { StatusBadge } from '../../components/shared/StatusBadge';
 import { Navigation, Plus } from 'lucide-react';
@@ -10,13 +10,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 const tripSchema = z.object({
-  driverId: z.string().nonempty('Please select a driver'),
-  vehicleId: z.string().nonempty('Please select a vehicle'),
+  driverId: z.string().min(1, 'Please select a driver'),
+  vehicleId: z.string().min(1, 'Please select a vehicle'),
   origin: z.string().min(2, 'Origin location required'),
   destination: z.string().min(2, 'Destination location required'),
   route: z.string().min(2, 'Route description required'),
-  distanceKm: z.coerce.number().min(1, 'Distance must be positive'),
-  estimatedDurationHours: z.coerce.number().min(0.5, 'Duration must be at least 30 mins'),
+  distanceKm: z.number().min(1, 'Distance must be positive'),
+  estimatedDurationHours: z.number().min(0.5, 'Duration must be at least 30 mins'),
 });
 
 type TripFormValues = z.infer<typeof tripSchema>;
@@ -289,7 +289,7 @@ export const TripList: React.FC = () => {
                   <label className="block font-semibold text-muted-foreground mb-1">Distance (km)</label>
                   <input
                     type="number"
-                    {...register('distanceKm')}
+                    {...register('distanceKm', { valueAsNumber: true })}
                     placeholder="e.g., 420"
                     className="w-full rounded border border-border bg-background px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                   />
@@ -300,7 +300,7 @@ export const TripList: React.FC = () => {
                   <input
                     type="number"
                     step="0.5"
-                    {...register('estimatedDurationHours')}
+                    {...register('estimatedDurationHours', { valueAsNumber: true })}
                     placeholder="e.g., 8"
                     className="w-full rounded border border-border bg-background px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                   />
