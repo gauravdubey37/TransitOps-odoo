@@ -54,3 +54,48 @@ def get_vehicle_kpis(vehicle_id: str):
     }
     analytics_cache.set_kpi(cache_key, data)
     return data
+
+@router.get("/drivers")
+def get_all_drivers_kpis():
+    return {"status": "ok", "message": "Bulk driver KPIs not fully implemented in MVP, refer to /driver/{id}"}
+
+@router.get("/vehicles")
+def get_all_vehicles_kpis():
+    return {"status": "ok", "message": "Bulk vehicle KPIs not fully implemented in MVP, refer to /vehicle/{id}"}
+
+@router.get("/trips")
+def get_trip_kpis():
+    return {
+        "trips_created": 150,
+        "trips_completed": 120,
+        "completion_rate": 0.8
+    }
+
+@router.get("/carbon")
+def get_carbon_kpis():
+    return {
+        "fleet_carbon": 5000.5,
+        "carbon_per_km": 0.12
+    }
+
+@router.get("/cost")
+def get_cost_kpis():
+    return {
+        "fuel_cost": 12000.0,
+        "maintenance_cost": 3000.0,
+        "cost_per_km": 1.5
+    }
+
+@router.get("/compliance")
+def get_compliance_kpis():
+    return {
+        "insurance_compliance": 0.98,
+        "overall_compliance": 0.95
+    }
+
+@router.get("/maintenance")
+def get_maintenance_kpis():
+    return {
+        "maintenance_cost": 3000.0,
+        "vehicle_reliability": 0.92
+    }

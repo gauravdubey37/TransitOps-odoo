@@ -33,3 +33,15 @@ def get_driver_recommendations(req: DriverRecommendationRequest):
     
     analytics_cache.set_recommendation(cache_key, explained_recs)
     return explained_recs
+
+@router.get("/")
+def get_all_recommendations():
+    return {"status": "ok", "message": "Bulk recommendations returning mock active recs", "data": []}
+
+@router.get("/history")
+def get_recommendation_history():
+    return {"status": "ok", "message": "Historical recommendations returning mock resolved recs", "data": []}
+
+@router.get("/{rec_id}")
+def get_recommendation(rec_id: str):
+    return {"status": "ok", "message": f"Details for recommendation {rec_id}"}
