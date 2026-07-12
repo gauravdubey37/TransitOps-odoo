@@ -6,5 +6,5 @@ export const VoiceIntentSchema = z.object({
 
 export const VoiceConfirmSchema = z.object({
   intent: z.string().min(1, "Intent is required"),
-  data: z.record(z.any()).optional()
+  data: z.record(z.string(), z.any()).optional()
 });
