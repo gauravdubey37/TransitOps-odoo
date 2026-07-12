@@ -49,24 +49,32 @@ else
     check "Neo4j" $?
 fi
 
-# Backend (optional)
+check_optional() {
+    local name="$1"
+    local status="$2"
+    if [ "${status}" -eq 0 ]; then
+        printf "  %-20s %s\n" "${name}" "OK"
+    else
+        printf "  %-20s %s\n" "${name}" "SKIP (not running)"
+    fi
+}
+
+# Application services (optional until backend/frontend/analytics branches are merged)
 BACKEND_PORT="${BACKEND_PORT:-5001}"
 curl -sf "http://localhost:${BACKEND_PORT}/health" >/dev/null 2>&1
-check "Backend" $?
+check_optional "Backend" $?
 
-# Analytics (optional)
 ANALYTICS_PORT="${ANALYTICS_PORT:-8000}"
 curl -sf "http://localhost:${ANALYTICS_PORT}/health" >/dev/null 2>&1
-check "Analytics" $?
+check_optional "Analytics" $?
 
-# Frontend (optional)
 FRONTEND_PORT="${FRONTEND_PORT:-3000}"
 curl -sf "http://localhost:${FRONTEND_PORT}" >/dev/null 2>&1
-check "Frontend" $?
+check_optional "Frontend" $?
 
 echo "========================"
 if [ "${ERRORS}" -gt 0 ]; then
-    echo "Health check: ${ERRORS} service(s) unavailable (optional services may not be running yet)"
+    echo "Health check FAILED: ${ERRORS} required service(s) unavailable"
     exit 1
 fi
-echo "All services healthy"
+echo "Required services healthy"
