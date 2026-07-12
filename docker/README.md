@@ -17,16 +17,31 @@ This directory contains all Docker-related configuration for TransitOps.
 
 ## Usage
 
+**Windows (full setup including migrations and seed):**
+
+```powershell
+.\scripts\setup.ps1
+```
+
+**Start databases only:**
+
 ```bash
-# Start all services (development)
-docker compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml up -d
-
-# Start databases only
 docker compose -f docker/docker-compose.yml up -d postgres neo4j
+```
 
-# Stop all services
+**Start all services (development — requires backend/frontend/analytics code):**
+
+```bash
+docker compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml up -d
+```
+
+**Stop all services:**
+
+```bash
 docker compose -f docker/docker-compose.yml down
 ```
+
+See `docs/07_Development/LOCAL_SETUP.md` for complete setup instructions.
 
 ## Ports
 
