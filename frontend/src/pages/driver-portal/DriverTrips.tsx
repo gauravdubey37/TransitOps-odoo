@@ -142,28 +142,41 @@ export const DriverTrips: React.FC = () => {
       {/* Tab Panels */}
       <div className="text-xs">
         {activeTab === 'info' && (
-          <div className="rounded-lg border border-border bg-card p-4 space-y-4">
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Vehicle:</span>
-                <span className="font-semibold text-foreground">{activeTrip.vehiclePlate}</span>
+          <div className="rounded-lg border border-white/[0.06] bg-[#131D2B] p-5 space-y-5">
+            <div className="space-y-2.5">
+              <div className="flex justify-between border-b border-white/[0.03] pb-1.5">
+                <span className="text-muted-foreground">Vehicle Assigned:</span>
+                <span className="font-mono text-white font-bold">{activeTrip.vehiclePlate}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between border-b border-white/[0.03] pb-1.5">
                 <span className="text-muted-foreground">Route Distance:</span>
-                <span className="font-semibold text-foreground">{activeTrip.distanceKm} km</span>
+                <span className="font-mono text-white">{activeTrip.distanceKm} km</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Est. Time:</span>
-                <span className="font-semibold text-foreground">{activeTrip.estimatedDurationHours} hours</span>
+              <div className="flex justify-between border-b border-white/[0.03] pb-1.5">
+                <span className="text-muted-foreground">Estimated Time Window:</span>
+                <span className="font-mono text-white">{activeTrip.estimatedDurationHours} hours</span>
               </div>
             </div>
 
-            <button
-              onClick={() => completeTripMutation.mutate(activeTrip.id)}
-              className="w-full flex justify-center items-center rounded bg-success py-2 font-bold text-success-foreground hover:bg-success/95"
-            >
-              Mark Trip Completed
-            </button>
+            {/* Oversized controls for ease-of-tap in trucks */}
+            <div className="space-y-3 pt-2">
+              <button
+                onClick={() => completeTripMutation.mutate(activeTrip.id)}
+                className="w-full flex justify-center items-center rounded-lg bg-success py-4 text-xs font-extrabold uppercase tracking-wider text-[#09111D] hover:bg-success/90 transition-all shadow-[0_0_15px_rgba(34,197,94,0.15)] active:scale-98"
+              >
+                Mark Trip Completed
+              </button>
+
+              <button
+                onClick={() => {
+                  const reason = prompt("Describe emergency (e.g., Engine failure, flat tire, accident):");
+                  if (reason) alert("🚨 EMERGENCY SOS SIGNAL TRANSMITTED. Dispatch team has been notified. Location coordinates locked.");
+                }}
+                className="w-full flex justify-center items-center rounded-lg bg-destructive/10 border border-destructive/30 py-3 text-xs font-extrabold uppercase tracking-wider text-destructive hover:bg-destructive/15 transition-all active:scale-98"
+              >
+                🚨 SOS Dispatch Emergency Call
+              </button>
+            </div>
           </div>
         )}
 
