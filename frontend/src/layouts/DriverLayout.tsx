@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { LogOut, MapPin, ShieldAlert, Mic, User } from 'lucide-react';
+import { LogOut, MapPin, Mic, User } from 'lucide-react';
 
 export const DriverLayout: React.FC = () => {
   const { user, logout } = useAuth();
