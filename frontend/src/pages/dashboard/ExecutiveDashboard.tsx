@@ -26,6 +26,13 @@ import {
 } from 'recharts';
 
 export const ExecutiveDashboard: React.FC = () => {
+  const [time, setTime] = React.useState(new Date());
+  
+  React.useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   // Fetch operational resources
   const { data: trips = [], isLoading: tripsLoading } = useQuery<Trip[]>({
     queryKey: ['trips'],
@@ -71,9 +78,15 @@ export const ExecutiveDashboard: React.FC = () => {
   ];
 
   const activeTripColumns = [
-    { header: 'Trip Number', accessor: 'tripNumber' as keyof Trip },
+    { 
+      header: 'Trip Number', 
+      accessor: (row: Trip) => <span className="font-mono text-primary font-medium">{row.tripNumber}</span> 
+    },
     { header: 'Driver', accessor: 'driverName' as keyof Trip },
-    { header: 'Vehicle', accessor: 'vehiclePlate' as keyof Trip },
+    { 
+      header: 'Vehicle', 
+      accessor: (row: Trip) => <span className="font-mono">{row.vehiclePlate}</span> 
+    },
     { header: 'Destination', accessor: 'destination' as keyof Trip },
     {
       header: 'Status',
@@ -84,10 +97,10 @@ export const ExecutiveDashboard: React.FC = () => {
       accessor: (row: Trip) => (
         <div className="w-24">
           <div className="flex justify-between text-[10px] text-muted-foreground mb-0.5">
-            <span>{row.progress}%</span>
+            <span className="font-mono">{row.progress}%</span>
           </div>
           <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
-            <div className="h-full bg-primary" style={{ width: `${row.progress}%` }} />
+            <div className="h-full bg-primary transition-all duration-500 ease-out" style={{ width: `${row.progress}%` }} />
           </div>
         </div>
       ),
@@ -96,21 +109,33 @@ export const ExecutiveDashboard: React.FC = () => {
 
   // AI recommendations (mocked based on data)
   const aiRecommendations = [
-    { id: 1, title: 'Reassign Trip TRP-1001', desc: 'Driver Suresh Raina reports high fatigue score (68). Reassign to Vikram Singh.', priority: 'High' },
-    { id: 2, title: 'Optimize Route A-4', desc: 'Accident reported near toll plaza. Reroute via bypass to save 35 minutes.', priority: 'Medium' },
+    { id: 1, type: 'Route Optimization', save: 'Save 23 minutes', benefit: 'Fuel Saving: ₹3,420', confidence: 96 },
+    { id: 2, type: 'Driver Fatigue Alert', save: 'Safety Warning', benefit: 'Reassign TRP-1001', confidence: 94 },
   ];
 
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between border-b border-border pb-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Executive Overview</h1>
-          <p className="text-xs text-muted-foreground">Monitor real-time transport stats, driver logs, and AI predictions.</p>
+          <h1 className="text-2xl font-extrabold tracking-tight text-foreground">Good Morning, Himanshu</h1>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs mt-1 text-muted-foreground">
+            <span className="text-success font-semibold flex items-center gap-1">
+              <span className="h-2 w-2 rounded-full bg-success animate-ping" />
+              Fleet Operating Normally
+            </span>
+            <span>• 98.2% Operational Efficiency</span>
+            <span>• No Critical Incidents Detected</span>
+          </div>
         </div>
-        <div className="rounded-md border border-border bg-card px-3 py-1.5 text-xs font-semibold shadow-sm flex items-center gap-1.5">
-          <Activity className="h-3.5 w-3.5 text-success animate-pulse" />
-          Live Network Connected
+        <div className="text-right flex flex-col items-end">
+          <div className="rounded-md border border-border bg-card px-3 py-1.5 text-xs font-semibold shadow-sm flex items-center gap-1.5">
+            <Activity className="h-3.5 w-3.5 text-success animate-pulse" />
+            Live Network Connected
+          </div>
+          <span className="text-[10px] text-muted-foreground font-mono mt-1">
+            {time.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })} • {time.toLocaleTimeString()}
+          </span>
         </div>
       </div>
 
@@ -183,24 +208,37 @@ export const ExecutiveDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* AI Recommendations Panel */}
-        <div className="rounded-lg border border-border bg-card p-5 shadow-sm flex flex-col">
-          <div className="flex items-center gap-1.5 mb-3 border-b border-border pb-2">
-            <Sparkles className="h-4.5 w-4.5 text-primary" />
-            <h2 className="text-sm font-semibold text-foreground">AI Intelligence Center</h2>
+        {/* AI Command Center Panel */}
+        <div className="rounded-lg border border-primary/25 bg-[#131D2B] p-5 shadow-[0_0_20px_rgba(59,130,246,0.05)] flex flex-col">
+          <div className="flex items-center gap-1.5 mb-3 border-b border-white/[0.06] pb-2">
+            <Sparkles className="h-4.5 w-4.5 text-primary animate-pulse" />
+            <h2 className="text-xs font-bold uppercase tracking-wider text-primary">AI Command Center</h2>
           </div>
           <div className="flex-1 space-y-3">
             {aiRecommendations.map(rec => (
-              <div key={rec.id} className="p-3 bg-muted/40 rounded-lg border border-border space-y-1">
+              <div key={rec.id} className="p-3 bg-[#09111D]/80 rounded-lg border border-white/[0.04] space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-semibold text-foreground">{rec.title}</span>
-                  <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold ${
-                    rec.priority === 'High' ? 'bg-destructive/10 text-destructive' : 'bg-warning/10 text-warning'
-                  }`}>
-                    {rec.priority}
-                  </span>
+                  <span className="text-xs font-bold text-white tracking-wide">{rec.type}</span>
+                  <span className="text-[10px] font-mono text-cyan-400 font-semibold">{rec.confidence}% confidence</span>
                 </div>
-                <p className="text-[11px] text-muted-foreground">{rec.desc}</p>
+                
+                <div className="grid grid-cols-2 gap-2 text-[10px] pt-1">
+                  <div className="bg-white/[0.02] border border-white/[0.04] rounded p-1.5">
+                    <span className="text-muted-foreground block text-[8px] uppercase tracking-wide">Target Save</span>
+                    <span className="font-semibold text-white">{rec.save}</span>
+                  </div>
+                  <div className="bg-white/[0.02] border border-white/[0.04] rounded p-1.5">
+                    <span className="text-muted-foreground block text-[8px] uppercase tracking-wide">Calculated Benefit</span>
+                    <span className="font-semibold text-success font-mono">{rec.benefit}</span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => alert(`Recommendation applied: ${rec.type}`)}
+                  className="w-full mt-2 inline-flex items-center justify-center rounded border border-primary/40 bg-primary/10 hover:bg-primary/20 transition-all py-1 text-[10px] font-bold text-primary shadow-[0_0_10px_rgba(59,130,246,0.1)] active:scale-98"
+                >
+                  Accept Dispatch Recommendation
+                </button>
               </div>
             ))}
           </div>
