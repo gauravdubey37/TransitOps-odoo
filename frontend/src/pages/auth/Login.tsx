@@ -36,6 +36,19 @@ export const Login: React.FC = () => {
     }
   };
 
+  const handleRoleChange = (selectedRole: string) => {
+    setRole(selectedRole);
+    if (selectedRole === 'Administrator') {
+      setEmail('arjun.sharma@transitops.com');
+    } else if (selectedRole === 'Dispatcher') {
+      setEmail('priya.patel@transitops.com');
+    } else if (selectedRole === 'Fleet Manager') {
+      setEmail('rajesh.kumar@transitops.com');
+    } else if (selectedRole === 'Driver') {
+      setEmail('vikram.singh@transitops.com');
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="mt-8 space-y-6">
       {error && (
@@ -62,7 +75,7 @@ export const Login: React.FC = () => {
           <select
             id="role-select"
             value={role}
-            onChange={(e) => setRole(e.target.value)}
+            onChange={(e) => handleRoleChange(e.target.value)}
             className="relative block w-full rounded-b-md border border-border bg-background px-3 py-2 text-foreground focus:z-10 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm"
           >
             <option value="Administrator">Administrator (Arjun)</option>
