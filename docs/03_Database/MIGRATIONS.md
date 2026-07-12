@@ -4,7 +4,7 @@ Version: 1.0
 
 Status: Migration Strategy Freeze
 
-Last Updated: YYYY-MM-DD
+Last Updated: 2026-07-12
 
 ---
 
@@ -67,14 +67,17 @@ No developer should manually create or alter tables.
 database/
 
 ├── migrations/
+│   ├── postgres/          # Forward PostgreSQL migrations (*.sql)
+│   ├── neo4j/             # Forward Neo4j migrations (*.cypher)
+│   └── rollbacks/
+│       ├── postgres/      # PostgreSQL rollback scripts
+│       └── neo4j/         # Neo4j rollback scripts
 │
-├── postgres/
-│
-├── neo4j/
-│
-├── seeds/
-│
-└── scripts/
+├── postgres/              # Schema reference (tables, views, indexes)
+├── neo4j/                 # Graph reference (constraints, cypher)
+├── seed/                  # Seed data by profile (development, demo, testing)
+├── backup/                # Database backup output
+└── scripts/               # migrate.sh, seed.sh, backup.sh, validate.sh
 ```
 
 ---
@@ -348,6 +351,74 @@ Migration 030
 ```
 Initial Seed Data
 ```
+
+Seed data is managed separately in `database/seed/` (not as SQL migrations).
+
+---
+
+# Implemented Migrations (Infrastructure Branch)
+
+The following migrations are implemented as of 2026-07-12.
+
+## PostgreSQL (29 migrations)
+
+| # | File | Description |
+|---|------|-------------|
+| 001 | `20260712_090000_create_extensions.sql` | Extensions + schema_migrations table |
+| 002 | `20260712_090100_create_roles.sql` | Roles, permissions, role_permissions |
+| 003 | `20260712_090200_create_users.sql` | Users |
+| 004 | `20260712_090300_create_regions.sql` | Regions |
+| 005 | `20260712_090400_create_depots.sql` | Depots |
+| 005a | `20260712_090450_create_lookup_tables.sql` | Lookup tables (vehicle classes, fuel types, etc.) |
+| 006 | `20260712_090500_create_drivers.sql` | Drivers |
+| 007 | `20260712_090600_create_driver_licenses.sql` | Driver licenses |
+| 008 | `20260712_090700_create_driver_insurance.sql` | Driver insurance |
+| 009 | `20260712_090800_create_driver_experience.sql` | Driver experience |
+| 010 | `20260712_090900_create_driver_fatigue.sql` | Driver fatigue |
+| 011 | `20260712_091000_create_driver_challans.sql` | Driver challans |
+| 012 | `20260712_091100_create_vehicles.sql` | Vehicles |
+| 013 | `20260712_091200_create_vehicle_insurance.sql` | Vehicle insurance |
+| 014 | `20260712_091300_create_vehicle_puc.sql` | Vehicle PUC |
+| 015 | `20260712_091400_create_vehicle_tires.sql` | Vehicle tires |
+| 016 | `20260712_091500_create_maintenance_records.sql` | Maintenance records |
+| 017 | `20260712_091600_create_routes.sql` | Routes |
+| 018 | `20260712_091700_create_trips.sql` | Trips |
+| 019 | `20260712_091800_create_fuel_logs.sql` | Fuel logs |
+| 020 | `20260712_091900_create_trip_expenses.sql` | Trip expenses |
+| 021 | `20260712_092000_create_driver_allowances.sql` | Driver allowances |
+| 022 | `20260712_092100_create_carbon_records.sql` | Carbon records |
+| 023 | `20260712_092200_create_voice_logs.sql` | Voice logs |
+| 024 | `20260712_092300_create_notifications.sql` | Notifications |
+| 025 | `20260712_092400_create_audit_logs.sql` | Audit logs |
+| 026 | `20260712_092500_create_system_settings.sql` | System settings |
+| 027 | `20260712_092600_create_files.sql` | File metadata |
+| 028 | `20260712_092700_create_views.sql` | Reporting views |
+
+Each PostgreSQL migration has a matching rollback in `database/migrations/rollbacks/postgres/`.
+
+## Neo4j (2 migrations)
+
+| # | File | Description |
+|---|------|-------------|
+| 001 | `20260712_093000_create_constraints.cypher` | Unique constraints on node labels |
+| 002 | `20260712_093100_create_indexes.cypher` | Property indexes |
+
+## Running Migrations
+
+**Windows (PowerShell):**
+
+```powershell
+.\scripts\setup.ps1
+```
+
+**macOS / Linux:**
+
+```bash
+./scripts/db-migrate.sh
+./database/scripts/neo4j-migrate.sh
+```
+
+See `docs/07_Development/LOCAL_SETUP.md` for full setup instructions.
 
 ---
 
