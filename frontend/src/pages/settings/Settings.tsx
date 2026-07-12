@@ -6,7 +6,7 @@ import { DataTable } from '../../components/shared/DataTable';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Sliders, Users, Save, Shield } from 'lucide-react';
+import { Sliders, Users, Save } from 'lucide-react';
 
 const settingsSchema = z.object({
   orgName: z.string().min(2, 'Org name must be at least 2 characters'),
