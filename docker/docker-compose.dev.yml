@@ -20,16 +20,16 @@ services:
       - "${BACKEND_PORT:-5001}:5001"
     volumes:
       - ../backend:/app
-      - /app/node_modules
+      - backend-node-modules:/app/node_modules
       - uploads-data:/app/uploads
     environment:
       NODE_ENV: development
       PORT: 5001
       DATABASE_URL: postgresql://${POSTGRES_USER:-transitops}:${POSTGRES_PASSWORD:-transitops_dev}@postgres:5432/${POSTGRES_DB:-transitops}
-      NEO4J_URI: bolt://neo4j:7687
-      NEO4J_USER: ${NEO4J_USER:-neo4j}
-      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-transitops_dev}
+      DB_NAME: ${POSTGRES_DB:-transitops}
       JWT_SECRET: ${JWT_SECRET:-dev-secret}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-15m}
+      REFRESH_TOKEN_EXPIRES_IN: ${JWT_REFRESH_EXPIRY:-7d}
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
     depends_on:
       postgres:
@@ -37,11 +37,11 @@ services:
       neo4j:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:5001/health || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:5001/api/v1/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 60s
+      start_period: 90s
 
   analytics:
     build:
@@ -57,7 +57,7 @@ services:
       - ../analytics:/app
     environment:
       PYTHON_ENV: development
-      DATABASE_URL: postgresql://${POSTGRES_USER:-transitops}:${POSTGRES_PASSWORD:-transitops_dev}@postgres:5432/${POSTGRES_DB:-transitops}
+      POSTGRES_URI: postgresql://${POSTGRES_USER:-transitops}:${POSTGRES_PASSWORD:-transitops_dev}@postgres:5432/${POSTGRES_DB:-transitops}
       NEO4J_URI: bolt://neo4j:7687
       NEO4J_USER: ${NEO4J_USER:-neo4j}
       NEO4J_PASSWORD: ${NEO4J_PASSWORD:-transitops_dev}
@@ -67,11 +67,11 @@ services:
       neo4j:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8000/health || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8000/health/ || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 90s
+      start_period: 120s
 
   frontend:
     build:
@@ -85,12 +85,10 @@ services:
       - "${FRONTEND_PORT:-3000}:3000"
     volumes:
       - ../frontend:/app
-      - /app/node_modules
-      - /app/.next
+      - frontend-node-modules:/app/node_modules
     environment:
       NODE_ENV: development
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5001/api/v1}
-      NEXT_PUBLIC_ANALYTICS_URL: ${NEXT_PUBLIC_ANALYTICS_URL:-http://localhost:8000}
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:5001/api/v1}
     depends_on:
       backend:
         condition: service_healthy
@@ -100,3 +98,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 120s
+
+volumes:
+  backend-node-modules:
+  frontend-node-modules:
