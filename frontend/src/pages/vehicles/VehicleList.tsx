@@ -4,7 +4,7 @@ import { api } from '../../lib/api';
 import { Vehicle } from '../../types';
 import { DataTable } from '../../components/shared/DataTable';
 import { StatusBadge } from '../../components/shared/StatusBadge';
-import { Truck, Plus, AlertCircle, ShieldAlert, Activity, ShieldCheck } from 'lucide-react';
+import { Truck, Plus, ShieldAlert, Activity } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -26,7 +26,7 @@ export const VehicleList: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
 
-  const { data: vehicles = [], isLoading } = useQuery<Vehicle[]>({
+  const { data: vehicles = [] } = useQuery<Vehicle[]>({
     queryKey: ['vehicles'],
     queryFn: () => api.get<Vehicle[]>('/vehicles'),
   });
