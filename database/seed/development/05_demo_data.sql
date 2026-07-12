@@ -7,7 +7,7 @@ INSERT INTO routes (route_id, source, destination, distance_km, estimated_time, 
     ('t0000000-0000-4000-8000-000000000003', 'Bangalore', 'Hyderabad', 570, 9, 800, 120, 322, 18000),
     ('t0000000-0000-4000-8000-000000000004', 'Delhi', 'Jaipur', 280, 5, 400, 45, 121, 9000),
     ('t0000000-0000-4000-8000-000000000005', 'Pune', 'Bangalore', 840, 14, 1200, 180, 482, 28000)
-ON CONFLICT DO NOTHING;
+ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO vehicles (vehicle_id, registration_number, vehicle_class, manufacturer, model, manufacturing_year, fuel_type, mileage, load_capacity, current_odometer, status) VALUES
     ('v0000000-0000-4000-8000-000000000001', 'DL01AB1234', 'Truck', 'Tata', 'Prima', 2022, 'Diesel', 4.5, 25000, 45000, 'Available'),
@@ -29,7 +29,7 @@ INSERT INTO driver_licenses (license_id, driver_id, license_number, license_type
     ('dl000000-0000-4000-8000-000000000001', 'dr000000-0000-4000-8000-000000000001', 'DL0420210001234', 'HMV', '2015-06-01', '2035-06-01', 'RTO Delhi'),
     ('dl000000-0000-4000-8000-000000000002', 'dr000000-0000-4000-8000-000000000002', 'MH1220190005678', 'Transport', '2010-03-15', '2030-03-15', 'RTO Mumbai'),
     ('dl000000-0000-4000-8000-000000000003', 'dr000000-0000-4000-8000-000000000003', 'KA0320200009012', 'HMV', '2012-08-20', '2032-08-20', 'RTO Bangalore')
-ON CONFLICT DO NOTHING;
+ON CONFLICT (license_id) DO NOTHING;
 
 INSERT INTO driver_experience (experience_id, driver_id, total_trips, total_hours, total_distance, primary_vehicle_class, primary_route, primary_region) VALUES
     ('de000000-0000-4000-8000-000000000001', 'dr000000-0000-4000-8000-000000000001', 450, 3200, 180000, 'Truck', 'Delhi-Mumbai', 'North'),
@@ -47,4 +47,4 @@ INSERT INTO trips (trip_id, driver_id, vehicle_id, route_id, status, start_time,
     ('tr000000-0000-4000-8000-000000000001', 'dr000000-0000-4000-8000-000000000001', 'v0000000-0000-4000-8000-000000000001', 't0000000-0000-4000-8000-000000000001', 'Scheduled', NOW() + INTERVAL '1 day', 1400, NULL, 24, 2500),
     ('tr000000-0000-4000-8000-000000000002', 'dr000000-0000-4000-8000-000000000002', 'v0000000-0000-4000-8000-000000000002', 't0000000-0000-4000-8000-000000000002', 'Assigned', NOW() + INTERVAL '2 days', 150, NULL, 3, 350),
     ('tr000000-0000-4000-8000-000000000003', 'dr000000-0000-4000-8000-000000000003', 'v0000000-0000-4000-8000-000000000003', 't0000000-0000-4000-8000-000000000003', 'Completed', NOW() - INTERVAL '3 days', 570, 575, 9, 800)
-ON CONFLICT DO NOTHING;
+ON CONFLICT (trip_id) DO NOTHING;
