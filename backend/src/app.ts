@@ -19,6 +19,7 @@ import authRoutes from './modules/auth/routes';
 import userRoutes from './modules/user/routes';
 import fuelRoutes from './modules/fuel/routes';
 import expenseRoutes from './modules/expense/routes';
+import maintenanceRoutes from './modules/maintenance/routes';
 import { authMiddleware } from './middleware/auth.middleware';
 
 // Base Route
@@ -41,6 +42,7 @@ app.use('/api/v1/depots', authMiddleware, depotRoutes);
 app.use('/api/v1/routes', authMiddleware, routeRoutes);
 app.use('/api/v1/fuel', authMiddleware, fuelRoutes);
 app.use('/api/v1/expenses', authMiddleware, expenseRoutes);
+app.use('/api/v1/maintenance', authMiddleware, maintenanceRoutes);
 
 // Error handling middleware MUST be last
 app.use(errorMiddleware);
