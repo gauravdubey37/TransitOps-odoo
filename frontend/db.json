@@ -1,0 +1,241 @@
+{
+  "users": [
+    {
+      "id": "usr-001",
+      "name": "Arjun Sharma",
+      "email": "arjun.sharma@transitops.com",
+      "phone": "+91 98765 43210",
+      "department": "Operations",
+      "role": "Administrator",
+      "status": "Active",
+      "lastLogin": "2026-07-12T11:34:00Z"
+    },
+    {
+      "id": "usr-002",
+      "name": "Priya Patel",
+      "email": "priya.patel@transitops.com",
+      "phone": "+91 98765 43211",
+      "department": "Dispatch",
+      "role": "Dispatcher",
+      "status": "Active",
+      "lastLogin": "2026-07-12T12:05:00Z"
+    },
+    {
+      "id": "usr-003",
+      "name": "Rajesh Kumar",
+      "email": "rajesh.kumar@transitops.com",
+      "phone": "+91 98765 43212",
+      "department": "Fleet",
+      "role": "Fleet Manager",
+      "status": "Active",
+      "lastLogin": "2026-07-12T09:15:00Z"
+    },
+    {
+      "id": "usr-004",
+      "name": "Vikram Singh",
+      "email": "vikram.singh@transitops.com",
+      "phone": "+91 98765 43213",
+      "department": "Operations",
+      "role": "Driver",
+      "status": "Active",
+      "lastLogin": "2026-07-12T08:00:00Z"
+    }
+  ],
+  "roles": [
+    { "id": "role-1", "name": "Administrator", "description": "Full system access" },
+    { "id": "role-2", "name": "Operations Manager", "description": "Manage trips and routes" },
+    { "id": "role-3", "name": "Fleet Manager", "description": "Manage vehicles and maintenance" },
+    { "id": "role-4", "name": "Dispatcher", "description": "Assign drivers and vehicles to trips" },
+    { "id": "role-5", "name": "Driver", "description": "View assigned trips, log fuel & expenses" }
+  ],
+  "permissions": [
+    { "id": "perm-1", "module": "Fleet", "action": "View", "roles": ["Administrator", "Fleet Manager", "Operations Manager"] },
+    { "id": "perm-2", "module": "Fleet", "action": "Create", "roles": ["Administrator", "Fleet Manager"] },
+    { "id": "perm-3", "module": "Drivers", "action": "View", "roles": ["Administrator", "Fleet Manager", "Dispatcher"] },
+    { "id": "perm-4", "module": "Trips", "action": "Create", "roles": ["Administrator", "Dispatcher"] }
+  ],
+  "depots": [
+    { "id": "depot-001", "name": "Mumbai Central Hub", "location": "Mumbai, MH", "manager": "Rajesh Kumar", "fleetSize": 45, "driverCount": 50, "capacity": 60, "status": "Active" },
+    { "id": "depot-002", "name": "Pune Logistics Depot", "location": "Pune, MH", "manager": "Amit Patil", "fleetSize": 28, "driverCount": 32, "capacity": 40, "status": "Active" }
+  ],
+  "drivers": [
+    {
+      "id": "drv-001",
+      "name": "Vikram Singh",
+      "licenseNumber": "DL1420190004561",
+      "licenseExpiry": "2029-12-31",
+      "insuranceExpiry": "2027-05-15",
+      "phone": "+91 99999 88888",
+      "depotId": "depot-001",
+      "status": "Available",
+      "fatigueScore": 15,
+      "safetyScore": 92,
+      "completedTrips": 128,
+      "rating": 4.8
+    },
+    {
+      "id": "drv-002",
+      "name": "Suresh Raina",
+      "licenseNumber": "DL1420210009874",
+      "licenseExpiry": "2026-08-20",
+      "insuranceExpiry": "2026-09-01",
+      "phone": "+91 98888 77777",
+      "depotId": "depot-001",
+      "status": "Assigned",
+      "fatigueScore": 68,
+      "safetyScore": 84,
+      "completedTrips": 95,
+      "rating": 4.2
+    },
+    {
+      "id": "drv-003",
+      "name": "Harbhajan Das",
+      "licenseNumber": "DL1420200001235",
+      "licenseExpiry": "2028-04-10",
+      "insuranceExpiry": "2027-04-10",
+      "phone": "+91 97777 66666",
+      "depotId": "depot-002",
+      "status": "Fatigued",
+      "fatigueScore": 88,
+      "safetyScore": 79,
+      "completedTrips": 210,
+      "rating": 4.5
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "veh-001",
+      "plateNumber": "MH 01 DK 4532",
+      "model": "Tata Prima 4925.T",
+      "type": "Heavy Duty Truck",
+      "status": "Available",
+      "fuelLevel": 85,
+      "healthScore": 96,
+      "depotId": "depot-001",
+      "mileage": 4.2,
+      "odometer": 45200,
+      "tireHealth": { "frontLeft": 90, "frontRight": 88, "rearLeftInner": 82, "rearLeftOuter": 85, "rearRightInner": 84, "rearRightOuter": 83 },
+      "nextMaintenance": "2026-08-15"
+    },
+    {
+      "id": "veh-002",
+      "plateNumber": "MH 12 QW 9081",
+      "model": "Ashok Leyland Ecomet",
+      "type": "Medium Duty Truck",
+      "status": "Assigned",
+      "fuelLevel": 42,
+      "healthScore": 82,
+      "depotId": "depot-001",
+      "mileage": 5.1,
+      "odometer": 89400,
+      "tireHealth": { "frontLeft": 72, "frontRight": 75, "rearLeftInner": 60, "rearLeftOuter": 62, "rearRightInner": 65, "rearRightOuter": 63 },
+      "nextMaintenance": "2026-07-28"
+    },
+    {
+      "id": "veh-003",
+      "plateNumber": "MH 14 TY 2341",
+      "model": "BharatBenz 2823C",
+      "type": "Dumper",
+      "status": "Maintenance",
+      "fuelLevel": 12,
+      "healthScore": 48,
+      "depotId": "depot-002",
+      "mileage": 3.1,
+      "odometer": 120500,
+      "tireHealth": { "frontLeft": 45, "frontRight": 40, "rearLeftInner": 38, "rearLeftOuter": 35, "rearRightInner": 42, "rearRightOuter": 41 },
+      "nextMaintenance": "2026-07-13"
+    }
+  ],
+  "trips": [
+    {
+      "id": "trp-001",
+      "tripNumber": "TRP-2026-1001",
+      "driverId": "drv-002",
+      "driverName": "Suresh Raina",
+      "vehicleId": "veh-002",
+      "vehiclePlate": "MH 12 QW 9081",
+      "origin": "Mumbai Hub",
+      "destination": "Pune Depot",
+      "status": "Assigned",
+      "startDateTime": "2026-07-12T10:00:00Z",
+      "endDateTime": null,
+      "route": "Mumbai-Pune Expressway",
+      "distanceKm": 150,
+      "progress": 30,
+      "estimatedDurationHours": 3.5,
+      "carbonEmissionKg": 48.5
+    },
+    {
+      "id": "trp-002",
+      "tripNumber": "TRP-2026-1002",
+      "driverId": "drv-001",
+      "driverName": "Vikram Singh",
+      "vehicleId": "veh-001",
+      "vehiclePlate": "MH 01 DK 4532",
+      "origin": "Pune Depot",
+      "destination": "Mumbai Hub",
+      "status": "Completed",
+      "startDateTime": "2026-07-11T08:00:00Z",
+      "endDateTime": "2026-07-11T12:00:00Z",
+      "route": "Mumbai-Pune Expressway",
+      "distanceKm": 150,
+      "progress": 100,
+      "estimatedDurationHours": 3.5,
+      "carbonEmissionKg": 45.2
+    }
+  ],
+  "fuelLogs": [
+    {
+      "id": "fl-001",
+      "vehicleId": "veh-001",
+      "driverId": "drv-001",
+      "date": "2026-07-11T08:30:00Z",
+      "liters": 120,
+      "cost": 11400,
+      "odometer": 45050,
+      "location": "Expressway Fuel Plaza"
+    }
+  ],
+  "expenses": [
+    {
+      "id": "exp-001",
+      "tripId": "trp-002",
+      "driverId": "drv-001",
+      "date": "2026-07-11T11:00:00Z",
+      "type": "Toll",
+      "amount": 320,
+      "description": "Khalapur Toll Plaza",
+      "status": "Approved"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "nt-001",
+      "title": "Critical Maintenance Alert",
+      "message": "Vehicle MH 14 TY 2341 health score dropped below 50%. Engine check required.",
+      "severity": "Critical",
+      "read": false,
+      "timestamp": "2026-07-12T12:00:00Z"
+    },
+    {
+      "id": "nt-002",
+      "title": "Driver Fatigue Warning",
+      "message": "Driver Harbhajan Das active driving time exceeded 8 hours.",
+      "severity": "Warning",
+      "read": false,
+      "timestamp": "2026-07-12T11:45:00Z"
+    }
+  ],
+  "settings": {
+    "orgName": "TransitOps Logistics India",
+    "timezone": "Asia/Kolkata",
+    "currency": "INR",
+    "distanceUnit": "km",
+    "fuelUnit": "L",
+    "carbonUnit": "kg",
+    "theme": "System"
+  },
+  "voiceTasks": [
+    { "id": "vt-1", "command": "Show delayed trips", "interpretedIntent": "nav_to_trips_delayed", "timestamp": "2026-07-12T12:10:00Z", "response": "Navigating to delayed trips dashboard." }
+  ]
+}
