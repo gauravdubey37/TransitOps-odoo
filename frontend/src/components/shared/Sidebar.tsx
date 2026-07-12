@@ -41,33 +41,44 @@ export const Sidebar: React.FC = () => {
   const visibleItems = navigationItems.filter(item => hasPermission(item.module, 'View'));
 
   return (
-    <aside className="hidden h-screen w-64 flex-col border-r border-border bg-card md:flex">
-      <div className="flex h-16 items-center justify-start border-b border-border px-6">
-        <ShieldCheck className="mr-2 h-6 w-6 text-primary" />
-        <span className="text-lg font-bold tracking-tight text-foreground">TransitOps</span>
+    <aside className="hidden h-screen w-64 flex-col border-r border-white/[0.06] bg-[#131D2B] md:flex">
+      <div className="flex h-16 items-center justify-start border-b border-white/[0.06] px-6">
+        <ShieldCheck className="mr-2 h-6 w-6 text-primary shadow-[0_0_10px_rgba(59,130,246,0.3)]" />
+        <span className="text-lg font-extrabold tracking-tight text-white">TransitOps</span>
       </div>
-      <nav className="flex-1 space-y-1 px-4 py-4 overflow-y-auto">
+      <nav className="flex-1 space-y-1.5 px-3 py-4 overflow-y-auto">
         {visibleItems.map(item => (
           <NavLink
             key={item.name}
             to={item.path}
             className={({ isActive }) =>
-              `flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+              `flex items-center rounded px-3 py-2 text-sm font-medium transition-all ${
                 isActive
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                  ? 'bg-primary/10 text-primary border-l-2 border-primary shadow-[inset_0_0_10px_rgba(59,130,246,0.05)]'
+                  : 'text-muted-foreground hover:bg-white/[0.02] hover:text-white'
               }`
             }
           >
-            <item.icon className="mr-3 h-5 w-5" />
+            <item.icon className="mr-3 h-4.5 w-4.5" />
             {item.name}
           </NavLink>
         ))}
       </nav>
-      <div className="border-t border-border p-4">
-        <div className="rounded bg-muted p-3 text-center text-xs text-muted-foreground">
-          <p className="font-semibold text-foreground">Version 1.0.0 (Local)</p>
-          <p className="mt-0.5">Development Environment</p>
+      <div className="border-t border-white/[0.06] p-4 space-y-2">
+        <span className="text-[9px] font-extrabold tracking-widest text-muted-foreground uppercase block">LIVE STATUS</span>
+        <div className="space-y-1.5 text-[11px]">
+          <div className="flex items-center justify-between">
+            <span className="text-muted-foreground">Vehicles Online</span>
+            <span className="font-mono font-bold text-success">312</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-muted-foreground">Active Trips</span>
+            <span className="font-mono font-bold text-primary">154</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-muted-foreground">Fleet Efficiency</span>
+            <span className="font-mono font-bold text-cyan-400">98%</span>
+          </div>
         </div>
       </div>
     </aside>
