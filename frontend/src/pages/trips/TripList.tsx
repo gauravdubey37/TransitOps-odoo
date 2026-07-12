@@ -120,18 +120,18 @@ export const TripList: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-display">
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Trip Dispatch Control</h1>
-          <p className="text-xs text-muted-foreground">Assign drivers and vehicles, schedule routes, and monitor trip logs.</p>
+          <h1 className="text-2xl font-black uppercase tracking-wider text-foreground">Depot Dispatch Logbook (Trips)</h1>
+          <p className="text-xs text-muted-foreground">Assign Ustad and Gaddi, choose national highways, and inspect active trip sheets.</p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="inline-flex items-center justify-center rounded-md bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/95 transition-colors gap-1.5"
+          className="inline-flex items-center justify-center rounded bg-primary px-3.5 py-2 text-xs font-bold uppercase tracking-wider text-primary-foreground shadow hover:bg-primary/95 transition-colors gap-1.5"
         >
-          <Plus className="h-4 w-4" /> Dispatch Trip
+          <Plus className="h-4 w-4" /> Dispatch Gaddi
         </button>
       </div>
 
@@ -142,35 +142,35 @@ export const TripList: React.FC = () => {
             data={trips}
             columns={columns}
             searchKey="tripNumber"
-            searchPlaceholder="Search trip schedules..."
+            searchPlaceholder="Search trip sheets..."
             rowsPerPage={6}
           />
         </div>
 
         {/* Selected Trip Details & Status Timeline */}
-        <div className="rounded-lg border border-border bg-card p-5 shadow-sm">
-          <h2 className="text-sm font-semibold mb-4 border-b border-border pb-2 flex items-center gap-1.5">
-            <Navigation className="h-4.5 w-4.5 text-primary" /> Trip Dispatch Details
+        <div className="rounded border border-border bg-card p-5 shadow-sm">
+          <h2 className="text-xs font-black uppercase tracking-wider mb-4 border-b border-border pb-2 flex items-center gap-1.5 text-primary">
+            <Navigation className="h-4.5 w-4.5" /> Trip Logbook Details
           </h2>
           {selectedTrip ? (
-            <div className="space-y-4 text-xs">
+            <div className="space-y-4 text-xs font-semibold">
               <div>
-                <h3 className="font-bold text-sm text-foreground">{selectedTrip.tripNumber}</h3>
+                <h3 className="font-black text-sm text-foreground tracking-wide font-mono">{selectedTrip.tripNumber}</h3>
                 <p className="text-[11px] text-muted-foreground">{selectedTrip.route}</p>
               </div>
 
               {/* Status Flow Timeline */}
-              <div className="relative border-l border-white/[0.06] pl-6 space-y-5">
+              <div className="relative border-l border-border pl-6 space-y-5">
                 {/* Depot Left Event */}
                 <div className="relative">
                   <span className="absolute -left-[33px] flex h-5 w-5 items-center justify-center rounded-full bg-success/10 border border-success/30 text-success text-[10px]">
                     <Building2 className="h-3 w-3" />
                   </span>
                   <div className="flex justify-between items-baseline">
-                    <p className="font-bold text-white text-[11px]">Vehicle Left Depot</p>
+                    <p className="font-bold text-foreground text-[11px]">Gaddi Left Depot</p>
                     <span className="font-mono text-[9px] text-muted-foreground">09:24</span>
                   </div>
-                  <p className="text-[10px] text-muted-foreground">Dispatched from logistics depot and driver took shift control.</p>
+                  <p className="text-[10px] text-muted-foreground font-normal">Checked out from depot gate, Ustad started trip.</p>
                 </div>
 
                 {/* Fuel Logged Event */}
@@ -179,10 +179,10 @@ export const TripList: React.FC = () => {
                     <Flame className="h-3 w-3" />
                   </span>
                   <div className="flex justify-between items-baseline">
-                    <p className="font-bold text-white text-[11px]">Fuel Refill Logged</p>
+                    <p className="font-bold text-foreground text-[11px]">Fuel Refill Logged</p>
                     <span className="font-mono text-[9px] text-muted-foreground">10:18</span>
                   </div>
-                  <p className="text-[10px] text-muted-foreground">42 Liters refueled at Highway Station NH-48.</p>
+                  <p className="text-[10px] text-muted-foreground font-normal">42 Liters diesel refilled at NH-48 Pump.</p>
                 </div>
 
                 {/* Traffic Delay Alert Event */}
@@ -195,59 +195,59 @@ export const TripList: React.FC = () => {
                     <AlertTriangle className="h-3 w-3" />
                   </span>
                   <div className="flex justify-between items-baseline">
-                    <p className="font-bold text-white text-[11px]">Traffic Delay Advisory</p>
+                    <p className="font-bold text-foreground text-[11px]">Traffic Delay Advisory</p>
                     <span className="font-mono text-[9px] text-muted-foreground">12:14</span>
                   </div>
-                  <p className="text-[10px] text-muted-foreground">Rerouted automatically due to heavy bypass toll lane congestion.</p>
+                  <p className="text-[10px] text-muted-foreground font-normal">Rerouted via highway bypass to avoid toll traffic.</p>
                 </div>
 
                 {/* Destination Reached Event */}
                 <div className="relative">
                   <span className={`absolute -left-[33px] flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
                     selectedTrip.status === 'Completed'
-                      ? 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-400'
-                      : 'bg-white/[0.02] border border-white/[0.06] text-muted-foreground'
+                      ? 'bg-info/10 border border-info/30 text-info font-bold'
+                      : 'bg-background border border-border text-muted-foreground'
                   }`}>
                     <MapPin className="h-3 w-3" />
                   </span>
                   <div className="flex justify-between items-baseline">
-                    <p className="font-bold text-[11px]">Destination Arrived</p>
+                    <p className="font-bold text-[11px] text-foreground">Arrival at Destination</p>
                     <span className="font-mono text-[9px] text-muted-foreground">13:02</span>
                   </div>
-                  <p className="text-[10px] text-muted-foreground">
+                  <p className="text-[10px] text-muted-foreground font-normal">
                     {selectedTrip.status === 'Completed'
                       ? 'Shipment unloaded and cargo verified by recipient.'
-                      : 'Planned arrival destination window.'}
+                      : 'Expected arrival at warehouse destination.'}
                   </p>
                 </div>
               </div>
 
-              <div className="space-y-2 border-t border-border pt-3">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Origin:</span>
-                  <span className="font-medium">{selectedTrip.origin}</span>
+              <div className="space-y-2 border-t border-border pt-3 font-mono">
+                <div className="flex justify-between font-display">
+                  <span className="text-muted-foreground font-semibold">Origin Hub:</span>
+                  <span className="font-bold text-foreground">{selectedTrip.origin}</span>
+                </div>
+                <div className="flex justify-between font-display">
+                  <span className="text-muted-foreground font-semibold">Destination Hub:</span>
+                  <span className="font-bold text-foreground">{selectedTrip.destination}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Destination:</span>
-                  <span className="font-medium">{selectedTrip.destination}</span>
+                  <span className="text-muted-foreground font-display font-semibold">Odometer Distance:</span>
+                  <span className="font-bold text-foreground">{selectedTrip.distanceKm} km</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Odometer Distance:</span>
-                  <span className="font-medium">{selectedTrip.distanceKm} km</span>
+                  <span className="text-muted-foreground font-display font-semibold">Estimated Duration:</span>
+                  <span className="font-bold text-foreground">{selectedTrip.estimatedDurationHours} hours</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Estimated Duration:</span>
-                  <span className="font-medium">{selectedTrip.estimatedDurationHours} hours</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Carbon Emissions:</span>
-                  <span className="font-medium text-success">{selectedTrip.carbonEmissionKg} kg CO₂</span>
+                <div className="flex justify-between font-display">
+                  <span className="text-muted-foreground font-semibold">Carbon Emissions:</span>
+                  <span className="font-bold text-success">{selectedTrip.carbonEmissionKg} kg CO₂</span>
                 </div>
               </div>
             </div>
           ) : (
             <div className="py-12 text-center text-xs text-muted-foreground">
-              Select a trip number from the roster to view dispatch timeline.
+              Select a trip number from the list to view dispatch timeline.
             </div>
           )}
         </div>
