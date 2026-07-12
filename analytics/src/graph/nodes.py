@@ -68,4 +68,71 @@ class NodeManager:
         """
         neo4j_client.execute_write(query, **depot_data)
 
+    @staticmethod
+    def merge_region(region_data: dict):
+        query = """
+        MERGE (r:Region {region_id: $region_id})
+        SET r.name = $name
+        """
+        neo4j_client.execute_write(query, **region_data)
+
+    @staticmethod
+    def merge_fuel_log(fuel_data: dict):
+        query = """
+        MERGE (f:FuelLog {log_id: $log_id})
+        SET f.amount = $amount,
+            f.cost = $cost,
+            f.date = $date
+        """
+        neo4j_client.execute_write(query, **fuel_data)
+
+    @staticmethod
+    def merge_expense(expense_data: dict):
+        query = """
+        MERGE (e:Expense {expense_id: $expense_id})
+        SET e.type = $type,
+            e.amount = $amount,
+            e.date = $date
+        """
+        neo4j_client.execute_write(query, **expense_data)
+
+    @staticmethod
+    def merge_maintenance(maintenance_data: dict):
+        query = """
+        MERGE (m:Maintenance {maintenance_id: $maintenance_id})
+        SET m.type = $type,
+            m.cost = $cost,
+            m.date = $date
+        """
+        neo4j_client.execute_write(query, **maintenance_data)
+
+    @staticmethod
+    def merge_carbon_record(carbon_data: dict):
+        query = """
+        MERGE (c:CarbonRecord {record_id: $record_id})
+        SET c.emissions = $emissions,
+            c.date = $date
+        """
+        neo4j_client.execute_write(query, **carbon_data)
+
+    @staticmethod
+    def merge_recommendation(rec_data: dict):
+        query = """
+        MERGE (r:Recommendation {rec_id: $rec_id})
+        SET r.type = $type,
+            r.confidence = $confidence,
+            r.status = $status
+        """
+        neo4j_client.execute_write(query, **rec_data)
+
+    @staticmethod
+    def merge_notification(notif_data: dict):
+        query = """
+        MERGE (n:Notification {notif_id: $notif_id})
+        SET n.type = $type,
+            n.severity = $severity,
+            n.message = $message
+        """
+        neo4j_client.execute_write(query, **notif_data)
+
 node_manager = NodeManager()
