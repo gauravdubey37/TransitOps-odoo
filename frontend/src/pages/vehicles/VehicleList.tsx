@@ -136,73 +136,111 @@ export const VehicleList: React.FC = () => {
         </div>
 
         {/* Selected Vehicle Health and Tire wear Details */}
-        <div className="rounded-lg border border-border bg-card p-5 shadow-sm">
-          <h2 className="text-sm font-semibold mb-4 border-b border-border pb-2 flex items-center gap-1.5">
-            <Truck className="h-4.5 w-4.5 text-primary" /> Vehicle Diagnostics
+        <div className="rounded-lg border border-white/[0.06] bg-[#131D2B] p-5 shadow-sm">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-primary mb-4 border-b border-white/[0.06] pb-2 flex items-center gap-1.5">
+            <Truck className="h-4.5 w-4.5" /> Vehicle Diagnostics Control
           </h2>
           {selectedVehicle ? (
             <div className="space-y-4 text-xs">
-              <div className="flex items-center space-x-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-lg">
+              <div className="flex items-center space-x-3 bg-white/[0.02] border border-white/[0.04] p-3 rounded-lg">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary border border-primary/20 font-bold text-lg shadow-[0_0_15px_rgba(59,130,246,0.1)]">
                   <Truck className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-foreground">{selectedVehicle.plateNumber}</h3>
-                  <p className="text-[11px] text-muted-foreground">{selectedVehicle.model} ({selectedVehicle.type})</p>
+                  <h3 className="font-bold text-sm text-white font-mono tracking-wide">{selectedVehicle.plateNumber}</h3>
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{selectedVehicle.model} ({selectedVehicle.type})</p>
                 </div>
               </div>
 
-              <div className="space-y-2 border-t border-border pt-3">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Fuel Level:</span>
-                  <span className="font-medium">{selectedVehicle.fuelLevel}%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Next Maintenance:</span>
-                  <span className="font-medium text-warning">{selectedVehicle.nextMaintenance}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Odometer:</span>
-                  <span className="font-medium">{selectedVehicle.odometer.toLocaleString()} km</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Fuel Mileage:</span>
-                  <span className="font-medium">{selectedVehicle.mileage} km/L</span>
+              {/* Hero Metric: Overall Health Score */}
+              <div className="bg-white/[0.02] border border-white/[0.04] p-4 rounded-lg flex flex-col items-center justify-center space-y-1">
+                <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Overall Vehicle Health</span>
+                <span className={`text-3xl font-extrabold font-mono ${
+                  selectedVehicle.healthScore > 80 ? 'text-success' : selectedVehicle.healthScore > 50 ? 'text-warning' : 'text-destructive'
+                }`}>
+                  {selectedVehicle.healthScore}%
+                </span>
+                <div className="w-full mt-2 h-1.5 rounded-full bg-white/[0.04] overflow-hidden">
+                  <div className={`h-full transition-all duration-1000 ${
+                    selectedVehicle.healthScore > 80 ? 'bg-success' : selectedVehicle.healthScore > 50 ? 'bg-warning' : 'bg-destructive'
+                  }`} style={{ width: `${selectedVehicle.healthScore}%` }} />
                 </div>
               </div>
 
-              {/* Tire Wear visual map */}
-              <div className="space-y-2 border-t border-border pt-3">
-                <h4 className="font-semibold text-foreground flex items-center gap-1">
-                  <Activity className="h-3.5 w-3.5" /> Tire Wear Indexes
+              <div className="space-y-2 border-t border-white/[0.06] pt-3">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Fuel Level Capacity:</span>
+                  <span className="font-mono text-white font-bold">{selectedVehicle.fuelLevel}%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Odometer Index:</span>
+                  <span className="font-mono text-white">{selectedVehicle.odometer.toLocaleString()} km</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Fuel Mileage Rate:</span>
+                  <span className="font-mono text-cyan-400 font-bold">{selectedVehicle.mileage} km/L</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Next Scheduled Service:</span>
+                  <span className="font-mono text-white">{selectedVehicle.nextMaintenance}</span>
+                </div>
+              </div>
+
+              {/* Physical Tire wear map chassis style */}
+              <div className="space-y-2 border-t border-white/[0.06] pt-3">
+                <h4 className="font-bold text-[10px] uppercase tracking-widest text-muted-foreground flex items-center gap-1.5 mb-3">
+                  <Activity className="h-3.5 w-3.5 text-primary" /> Chassis Tire Wear Matrix
                 </h4>
-                <div className="grid grid-cols-2 gap-2 text-[10px]">
-                  <div className="p-2 rounded bg-muted/50 border border-border">
-                    <p className="text-muted-foreground">Front Left</p>
-                    <p className="font-bold text-foreground mt-0.5">{selectedVehicle.tireHealth.frontLeft}%</p>
-                  </div>
-                  <div className="p-2 rounded bg-muted/50 border border-border">
-                    <p className="text-muted-foreground">Front Right</p>
-                    <p className="font-bold text-foreground mt-0.5">{selectedVehicle.tireHealth.frontRight}%</p>
-                  </div>
-                  <div className="p-2 rounded bg-muted/50 border border-border">
-                    <p className="text-muted-foreground">Rear Left Inner</p>
-                    <p className="font-bold text-foreground mt-0.5">{selectedVehicle.tireHealth.rearLeftInner}%</p>
-                  </div>
-                  <div className="p-2 rounded bg-muted/50 border border-border">
-                    <p className="text-muted-foreground">Rear Right Inner</p>
-                    <p className="font-bold text-foreground mt-0.5">{selectedVehicle.tireHealth.rearRightInner}%</p>
+                
+                <div className="flex justify-center my-4">
+                  {/* Visual Chassis Container */}
+                  <div className="w-32 border-x-2 border-dashed border-white/20 px-2 py-4 relative bg-white/[0.01] rounded-lg">
+                    {/* Front Axle */}
+                    <div className="flex justify-between mb-8">
+                      {/* Front Left Tyre */}
+                      <div className={`w-4 h-8 rounded border flex items-center justify-center font-mono text-[8px] font-bold ${
+                        selectedVehicle.tireHealth.frontLeft > 80 ? 'border-success bg-success/10 text-success' : 'border-warning bg-warning/10 text-warning'
+                      }`}>
+                        {selectedVehicle.tireHealth.frontLeft}
+                      </div>
+                      {/* Front Right Tyre */}
+                      <div className={`w-4 h-8 rounded border flex items-center justify-center font-mono text-[8px] font-bold ${
+                        selectedVehicle.tireHealth.frontRight > 80 ? 'border-success bg-success/10 text-success' : 'border-warning bg-warning/10 text-warning'
+                      }`}>
+                        {selectedVehicle.tireHealth.frontRight}
+                      </div>
+                    </div>
+
+                    {/* Rear Axle */}
+                    <div className="flex justify-between">
+                      {/* Rear Left Tyres */}
+                      <div className="flex gap-0.5">
+                        <div className={`w-3.5 h-8 rounded border flex items-center justify-center font-mono text-[7px] font-bold ${
+                          selectedVehicle.tireHealth.rearLeftInner > 80 ? 'border-success bg-success/10 text-success' : 'border-warning bg-warning/10 text-warning'
+                        }`}>
+                          {selectedVehicle.tireHealth.rearLeftInner}
+                        </div>
+                      </div>
+                      {/* Rear Right Tyres */}
+                      <div className="flex gap-0.5">
+                        <div className={`w-3.5 h-8 rounded border flex items-center justify-center font-mono text-[7px] font-bold ${
+                          selectedVehicle.tireHealth.rearRightInner > 80 ? 'border-success bg-success/10 text-success' : 'border-warning bg-warning/10 text-warning'
+                        }`}>
+                          {selectedVehicle.tireHealth.rearRightInner}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {selectedVehicle.healthScore < 60 && (
                 <div className="rounded-lg border border-destructive/20 bg-destructive/10 p-3 text-destructive flex gap-2">
-                  <ShieldAlert className="h-5 w-5 shrink-0" />
+                  <ShieldAlert className="h-5 w-5 shrink-0 animate-bounce" />
                   <div>
-                    <h4 className="font-bold">Critical Health Alert</h4>
+                    <h4 className="font-bold text-xs uppercase tracking-wide">Critical Health Advisory</h4>
                     <p className="text-[10px] mt-0.5 leading-relaxed">
-                      Vehicle health score is at {selectedVehicle.healthScore}%. Immediate service required.
+                      Vehicle health score is at {selectedVehicle.healthScore}%. Immediate dispatch lockout active.
                     </p>
                   </div>
                 </div>
@@ -210,7 +248,7 @@ export const VehicleList: React.FC = () => {
             </div>
           ) : (
             <div className="py-12 text-center text-xs text-muted-foreground">
-              Select a vehicle plate from the list to view diagnostic logs.
+              Select a vehicle plate from the list to load operational diagnostic telemetry logs.
             </div>
           )}
         </div>
