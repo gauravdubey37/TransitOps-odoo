@@ -29,9 +29,23 @@ class Neo4jClient:
             result = session.read_transaction(lambda tx: tx.run(query, **kwargs).data())
             return result
 
-    def execute_write(self, query: str, **kwargs):
+    def execute_write(self, query, **parameters):
         with self._driver.session() as session:
-            result = session.write_transaction(lambda tx: tx.run(query, **kwargs).data())
-            return result
+            result = session.run(query, parameters)
+            return result.data()
+
+    def initialize_indexes(self):
+        indexes = [
+            "CREATE INDEX IF NOT EXISTS FOR (d:Driver) ON (d.driver_id)",
+            "CREATE INDEX IF NOT EXISTS FOR (v:Vehicle) ON (v.vehicle_id)",
+            "CREATE INDEX IF NOT EXISTS FOR (t:Trip) ON (t.trip_id)",
+            "CREATE INDEX IF NOT EXISTS FOR (r:Route) ON (r.route_id)",
+            "CREATE INDEX IF NOT EXISTS FOR (d:Depot) ON (d.depot_id)"
+        ]
+        for idx in indexes:
+            try:
+                self.execute_write(idx)
+            except Exception as e:
+                logger.error(f"Error creating index: {e}")
 
 neo4j_client = Neo4jClient()
