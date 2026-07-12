@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api';
-import { Vehicle } from '../../types';
+import type { Vehicle } from '../../types';
 import { DataTable } from '../../components/shared/DataTable';
 import { StatusBadge } from '../../components/shared/StatusBadge';
 import { Truck, Plus, ShieldAlert, Activity } from 'lucide-react';
@@ -13,10 +13,10 @@ const vehicleSchema = z.object({
   plateNumber: z.string().min(5, 'Plate number must be at least 5 characters'),
   model: z.string().min(2, 'Model is required'),
   type: z.string().min(2, 'Type is required'),
-  fuelLevel: z.coerce.number().min(0).max(100),
-  healthScore: z.coerce.number().min(0).max(100),
-  odometer: z.coerce.number().min(0),
-  depotId: z.string().default('depot-001'),
+  fuelLevel: z.number().min(0).max(100),
+  healthScore: z.number().min(0).max(100),
+  odometer: z.number().min(0),
+  depotId: z.string().min(1, 'Depot is required'),
 });
 
 type VehicleFormValues = z.infer<typeof vehicleSchema>;
@@ -51,6 +51,7 @@ export const VehicleList: React.FC = () => {
       fuelLevel: 100,
       healthScore: 100,
       odometer: 0,
+      depotId: 'depot-001',
     }
   });
 
@@ -259,7 +260,7 @@ export const VehicleList: React.FC = () => {
                   <label className="block font-semibold text-muted-foreground mb-1">Fuel level (%)</label>
                   <input
                     type="number"
-                    {...register('fuelLevel')}
+                    {...register('fuelLevel', { valueAsNumber: true })}
                     className="w-full rounded border border-border bg-background px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                   />
                   {errors.fuelLevel && <p className="text-[10px] text-destructive mt-0.5">{errors.fuelLevel.message}</p>}
@@ -268,7 +269,7 @@ export const VehicleList: React.FC = () => {
                   <label className="block font-semibold text-muted-foreground mb-1">Health Score (%)</label>
                   <input
                     type="number"
-                    {...register('healthScore')}
+                    {...register('healthScore', { valueAsNumber: true })}
                     className="w-full rounded border border-border bg-background px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                   />
                   {errors.healthScore && <p className="text-[10px] text-destructive mt-0.5">{errors.healthScore.message}</p>}
@@ -279,7 +280,7 @@ export const VehicleList: React.FC = () => {
                 <label className="block font-semibold text-muted-foreground mb-1">Initial Odometer Reading (km)</label>
                 <input
                   type="number"
-                  {...register('odometer')}
+                  {...register('odometer', { valueAsNumber: true })}
                   className="w-full rounded border border-border bg-background px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                 />
                 {errors.odometer && <p className="text-[10px] text-destructive mt-0.5">{errors.odometer.message}</p>}

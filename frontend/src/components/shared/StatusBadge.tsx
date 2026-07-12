@@ -11,6 +11,7 @@ type StatusType =
   | 'In Transit'
   | 'Active'
   | 'Inactive'
+  | 'Out of Service'
   | 'Draft';
 
 interface StatusBadgeProps {
@@ -33,6 +34,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
       case 'Maintenance':
       case 'Cancelled':
       case 'Inactive':
+      case 'Out of Service':
         return 'bg-destructive/10 text-destructive border-destructive/20';
       default:
         return 'bg-muted text-muted-foreground border-border';
