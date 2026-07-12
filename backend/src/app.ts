@@ -22,6 +22,8 @@ import expenseRoutes from './modules/expense/routes';
 import maintenanceRoutes from './modules/maintenance/routes';
 import notificationRoutes from './modules/notification/routes';
 import dashboardRoutes from './modules/dashboard/routes';
+import voiceRoutes from './modules/voice/routes';
+import analyticsRoutes from './modules/analytics/routes';
 import { authMiddleware } from './middleware/auth.middleware';
 
 // Base Route
@@ -47,6 +49,8 @@ app.use('/api/v1/expenses', authMiddleware, expenseRoutes);
 app.use('/api/v1/maintenance', authMiddleware, maintenanceRoutes);
 app.use('/api/v1/notifications', authMiddleware, notificationRoutes);
 app.use('/api/v1/dashboard', authMiddleware, dashboardRoutes);
+app.use('/api/v1/voice', authMiddleware, voiceRoutes);
+app.use('/api/v1/analytics', authMiddleware, analyticsRoutes);
 
 // Error handling middleware MUST be last
 app.use(errorMiddleware);
