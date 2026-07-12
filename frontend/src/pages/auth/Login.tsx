@@ -29,7 +29,7 @@ export const Login: React.FC = () => {
       } else {
         setError('Login failed. Please check your network or try again.');
       }
-    } catch (err) {
+    } catch {
       setError('An error occurred.');
     } finally {
       setLoading(false);
