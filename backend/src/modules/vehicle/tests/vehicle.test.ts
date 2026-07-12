@@ -4,6 +4,16 @@ import { app } from '../../../app';
 import { VehicleRepository } from '../repository';
 import { VEHICLE_CLASS, FUEL_TYPE, VEHICLE_STATUS } from '../constants';
 
+
+vi.mock('../../../middleware/auth.middleware', () => ({
+  authMiddleware: (req: any, res: any, next: any) => {
+    req.user = { userId: 'u123', email: 'test@test.com', role: 'Administrator' };
+    next();
+  },
+  requireRole: () => (req: any, res: any, next: any) => next()
+}));
+
+
 describe('Vehicle API', () => {
   beforeEach(() => {
     vi.restoreAllMocks();

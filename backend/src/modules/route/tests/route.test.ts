@@ -5,6 +5,16 @@ import { RouteRepository } from '../repository';
 import { DepotService } from '../../depot/service';
 import { ROUTE_STATUS } from '../constants';
 
+
+vi.mock('../../../middleware/auth.middleware', () => ({
+  authMiddleware: (req: any, res: any, next: any) => {
+    req.user = { userId: 'u123', email: 'test@test.com', role: 'Administrator' };
+    next();
+  },
+  requireRole: () => (req: any, res: any, next: any) => next()
+}));
+
+
 describe('Route API', () => {
   beforeEach(() => {
     vi.restoreAllMocks();

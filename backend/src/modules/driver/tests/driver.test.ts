@@ -3,6 +3,16 @@ import request from 'supertest';
 import { app } from '../../../app';
 import { DriverRepository } from '../repository';
 
+
+vi.mock('../../../middleware/auth.middleware', () => ({
+  authMiddleware: (req: any, res: any, next: any) => {
+    req.user = { userId: 'u123', email: 'test@test.com', role: 'Administrator' };
+    next();
+  },
+  requireRole: () => (req: any, res: any, next: any) => next()
+}));
+
+
 describe('Driver API', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
