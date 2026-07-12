@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -28,6 +29,7 @@
   --color-info-foreground: var(--info-foreground);
   
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
   
   --radius-lg: 12px;
   --radius-md: 8px;
@@ -75,41 +77,41 @@
   }
 
   .dark {
-    --background: #0f172a;
-    --foreground: #f8fafc;
+    --background: #09111D;
+    --foreground: #f3f4f6;
     
-    --card: #1e293b;
-    --card-foreground: #f8fafc;
+    --card: #131D2B;
+    --card-foreground: #f3f4f6;
     
-    --popover: #1e293b;
-    --popover-foreground: #f8fafc;
+    --popover: #131D2B;
+    --popover-foreground: #f3f4f6;
     
     --primary: #3b82f6;
-    --primary-foreground: #0f172a;
+    --primary-foreground: #ffffff;
     
-    --secondary: #94a3b8;
-    --secondary-foreground: #f8fafc;
+    --secondary: #9ca3af;
+    --secondary-foreground: #f3f4f6;
     
-    --muted: #334155;
-    --muted-foreground: #94a3b8;
+    --muted: #1e293b;
+    --muted-foreground: #9ca3af;
     
-    --accent: #334155;
-    --accent-foreground: #f8fafc;
+    --accent: #1e293b;
+    --accent-foreground: #f3f4f6;
     
     --destructive: #ef4444;
     --destructive-foreground: #ffffff;
     
     --success: #22c55e;
-    --success-foreground: #0f172a;
+    --success-foreground: #09111D;
     
-    --warning: #f97316;
-    --warning-foreground: #0f172a;
+    --warning: #f59e0b;
+    --warning-foreground: #09111D;
     
     --info: #06b6d4;
-    --info-foreground: #0f172a;
+    --info-foreground: #09111D;
     
-    --border: #334155;
-    --input: #334155;
+    --border: rgba(255, 255, 255, 0.06);
+    --input: rgba(255, 255, 255, 0.06);
     --ring: #3b82f6;
   }
 }
