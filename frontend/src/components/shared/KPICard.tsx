@@ -27,10 +27,10 @@ export const KPICard: React.FC<KPICardProps> = ({
 }) => {
   if (loading) {
     return (
-      <div className="animate-pulse rounded-lg border border-white/[0.06] bg-[#131D2B] p-5 shadow-sm">
+      <div className="animate-pulse rounded border border-border bg-card p-5 shadow-sm">
         <div className="flex items-center justify-between">
           <div className="h-4 w-24 rounded bg-muted" />
-          <div className="h-8 w-8 rounded-full bg-muted" />
+          <div className="h-8 w-8 rounded bg-muted" />
         </div>
         <div className="mt-4 h-8 w-32 rounded bg-muted" />
         <div className="mt-2 h-3 w-40 rounded bg-muted" />
@@ -39,13 +39,13 @@ export const KPICard: React.FC<KPICardProps> = ({
   }
 
   return (
-    <div className="rounded-lg border border-white/[0.06] bg-[#131D2B] p-5 shadow-sm hover:shadow-md hover:border-white/[0.12] transition-all duration-200">
-      <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-muted-foreground">{title}</span>
+    <div className="rounded border border-border bg-card p-5 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-200">
+      <div className="flex items-center justify-between font-display">
+        <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{title}</span>
         {icon && <div className="text-muted-foreground">{icon}</div>}
       </div>
       <div className="mt-2 flex items-baseline justify-between">
-        <span className="text-2xl font-extrabold tracking-tight text-white font-mono">{value}</span>
+        <span className="text-2xl font-black tracking-tight text-foreground font-mono">{value}</span>
         {trend && (
           <span
             className={`inline-flex items-center text-xs font-bold ${
@@ -70,14 +70,14 @@ export const KPICard: React.FC<KPICardProps> = ({
 
       {/* Optional Mini Progress Bar */}
       {progress !== undefined && (
-        <div className="mt-3 h-1.5 w-full rounded-full bg-white/[0.04] overflow-hidden">
+        <div className="mt-3 h-1.5 w-full rounded-full bg-muted overflow-hidden">
           <div className="h-full bg-primary transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
         </div>
       )}
 
-      <div className="mt-3 flex items-center justify-between text-[10px] text-muted-foreground border-t border-white/[0.04] pt-2">
-        <span>{comparisonText}</span>
-        {lastUpdated && <span className="font-mono text-[9px]">{lastUpdated}</span>}
+      <div className="mt-3 flex items-center justify-between text-[10px] text-muted-foreground border-t border-border pt-2 font-display">
+        <span className="font-semibold uppercase tracking-wider">{comparisonText}</span>
+        {lastUpdated && <span className="font-mono text-[9px] font-semibold">{lastUpdated}</span>}
       </div>
     </div>
   );
