@@ -61,11 +61,11 @@ check_optional() {
 
 # Application services (optional until backend/frontend/analytics branches are merged)
 BACKEND_PORT="${BACKEND_PORT:-5001}"
-curl -sf "http://localhost:${BACKEND_PORT}/health" >/dev/null 2>&1
+curl -sf "http://localhost:${BACKEND_PORT}/api/v1/health" >/dev/null 2>&1
 check_optional "Backend" $?
 
 ANALYTICS_PORT="${ANALYTICS_PORT:-8000}"
-curl -sf "http://localhost:${ANALYTICS_PORT}/health" >/dev/null 2>&1
+curl -sf "http://localhost:${ANALYTICS_PORT}/health/" >/dev/null 2>&1
 check_optional "Analytics" $?
 
 FRONTEND_PORT="${FRONTEND_PORT:-3000}"
