@@ -4,7 +4,7 @@ Version: 1.0
 
 Status: Seed Data Freeze
 
-Last Updated: YYYY-MM-DD
+Last Updated: 2026-07-12
 
 ---
 
@@ -759,6 +759,47 @@ The graph database should initialize.
 and create relationships between them.
 
 Large analytical datasets should NOT be seeded.
+
+---
+
+# Implemented Seed Files (Infrastructure Branch)
+
+Seed data is stored in `database/seed/<profile>/` as numbered SQL files executed in order.
+
+## Development profile (`SEED_PROFILE=development`)
+
+| Order | File | Contents |
+|-------|------|----------|
+| 1 | `database/seed/development/01_roles_permissions.sql` | Roles, permissions, role-permission links |
+| 2 | `database/seed/development/02_lookup_data.sql` | Vehicle classes, fuel types, maintenance types, expense categories, notification types |
+| 3 | `database/seed/development/03_regions_depots.sql` | Regions and depots |
+| 4 | `database/seed/development/04_system_settings.sql` | System configuration keys |
+| 5 | `database/seed/development/05_demo_data.sql` | Demo routes, vehicles, drivers, trips |
+
+The admin user is created by `database/scripts/seed.sh` (or `scripts/setup.ps1` on Windows) using `ADMIN_EMAIL` and `ADMIN_PASSWORD` from `.env`. The password is never hardcoded in SQL files.
+
+## Other profiles
+
+| Profile | Directory | Status |
+|---------|-----------|--------|
+| `development` | `database/seed/development/` | Implemented |
+| `demo` | `database/seed/demo/` | Planned |
+| `testing` | `database/seed/testing/` | Planned |
+| `performance` | `database/seed/performance/` | Planned |
+
+## Running Seeds
+
+**Windows:**
+
+```powershell
+.\scripts\setup.ps1
+```
+
+**macOS / Linux:**
+
+```bash
+./scripts/db-seed.sh
+```
 
 ---
 
