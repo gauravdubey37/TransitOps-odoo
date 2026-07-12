@@ -146,42 +146,84 @@ export const DriverList: React.FC = () => {
         </div>
 
         {/* Selected Driver Profile Details Drawer */}
-        <div className="rounded-lg border border-border bg-card p-5 shadow-sm">
-          <h2 className="text-sm font-semibold mb-4 border-b border-border pb-2 flex items-center gap-1.5">
-            <Users className="h-4.5 w-4.5 text-primary" /> Driver Profile Details
+        <div className="rounded-lg border border-white/[0.06] bg-[#131D2B] p-5 shadow-sm">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-primary mb-4 border-b border-white/[0.06] pb-2 flex items-center gap-1.5">
+            <Users className="h-4.5 w-4.5" /> Driver Telemetry Control
           </h2>
           {selectedDriver ? (
             <div className="space-y-4 text-xs">
-              <div className="flex items-center space-x-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-lg">
+              <div className="flex items-center space-x-3 bg-white/[0.02] border border-white/[0.04] p-3 rounded-lg">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary border border-primary/20 font-bold text-lg shadow-[0_0_15px_rgba(59,130,246,0.1)]">
                   {selectedDriver.name.charAt(0)}
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-foreground">{selectedDriver.name}</h3>
-                  <p className="text-[11px] text-muted-foreground">ID: {selectedDriver.id}</p>
+                  <h3 className="font-bold text-sm text-white tracking-wide">{selectedDriver.name}</h3>
+                  <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wide">OPERATOR ID: {selectedDriver.id}</p>
                 </div>
               </div>
 
-              <div className="space-y-2 border-t border-border pt-3">
+              {/* Glowing Circular Fatigue Gauge */}
+              <div className="flex flex-col items-center justify-center bg-white/[0.02] border border-white/[0.04] rounded-lg p-4 space-y-2">
+                <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Fatigue Index Telemetry</span>
+                <div className="relative flex items-center justify-center">
+                  <svg className="h-20 w-20 transform -rotate-90">
+                    <circle
+                      cx="40"
+                      cy="40"
+                      r="32"
+                      className="stroke-white/[0.04]"
+                      strokeWidth="6"
+                      fill="transparent"
+                    />
+                    <circle
+                      cx="40"
+                      cy="40"
+                      r="32"
+                      className={`transition-all duration-1000 ease-out ${
+                        selectedDriver.fatigueScore > 70 
+                          ? 'stroke-destructive' 
+                          : selectedDriver.fatigueScore > 40 
+                          ? 'stroke-warning' 
+                          : 'stroke-success'
+                      }`}
+                      strokeWidth="6"
+                      strokeDasharray={2 * Math.PI * 32}
+                      strokeDashoffset={2 * Math.PI * 32 * (1 - selectedDriver.fatigueScore / 100)}
+                      strokeLinecap="round"
+                      fill="transparent"
+                    />
+                  </svg>
+                  <div className="absolute flex flex-col items-center justify-center text-center">
+                    <span className="text-sm font-extrabold font-mono text-white">{selectedDriver.fatigueScore}%</span>
+                  </div>
+                </div>
+                <span className={`text-[9px] font-extrabold uppercase tracking-widest ${
+                  selectedDriver.fatigueScore > 70 
+                    ? 'text-destructive animate-pulse' 
+                    : selectedDriver.fatigueScore > 40 
+                    ? 'text-warning' 
+                    : 'text-success'
+                }`}>
+                  {selectedDriver.fatigueScore > 70 ? 'Critical Rest Req.' : selectedDriver.fatigueScore > 40 ? 'Moderate Alert' : 'Optimal Standing'}
+                </span>
+              </div>
+
+              <div className="space-y-2 border-t border-white/[0.06] pt-3">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Phone:</span>
-                  <span className="font-medium">{selectedDriver.phone}</span>
+                  <span className="font-mono text-white">{selectedDriver.phone}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">License ID:</span>
-                  <span className="font-medium">{selectedDriver.licenseNumber}</span>
+                  <span className="font-mono text-white">{selectedDriver.licenseNumber}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">License Expiry:</span>
-                  <span className="font-medium text-warning">{selectedDriver.licenseExpiry}</span>
+                  <span className="text-muted-foreground">Safety Index Score:</span>
+                  <span className="font-mono text-success font-bold">{selectedDriver.safetyScore}%</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Insurance Expiry:</span>
-                  <span className="font-medium text-warning">{selectedDriver.insuranceExpiry}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Completed Trips:</span>
-                  <span className="font-medium">{selectedDriver.completedTrips}</span>
+                  <span className="text-muted-foreground">Completed Operations:</span>
+                  <span className="font-mono text-white">{selectedDriver.completedTrips} missions</span>
                 </div>
               </div>
 
@@ -189,9 +231,9 @@ export const DriverList: React.FC = () => {
                 <div className="rounded-lg border border-destructive/20 bg-destructive/10 p-3 text-destructive flex gap-2">
                   <ShieldAlert className="h-5 w-5 shrink-0" />
                   <div>
-                    <h4 className="font-bold">High Fatigue Warning</h4>
+                    <h4 className="font-bold text-xs uppercase tracking-wide">High Fatigue Advisory</h4>
                     <p className="text-[10px] mt-0.5 leading-relaxed">
-                      Fatigue score is at {selectedDriver.fatigueScore}%. Assigning new routes is blocked.
+                      Fatigue score is at {selectedDriver.fatigueScore}%. Assigning new routes is temporarily blocked.
                     </p>
                   </div>
                 </div>
@@ -199,7 +241,7 @@ export const DriverList: React.FC = () => {
             </div>
           ) : (
             <div className="py-12 text-center text-xs text-muted-foreground">
-              Select a driver from the list to view full profile details.
+              Select a driver from the roster list to load operator telemetry logs.
             </div>
           )}
         </div>
