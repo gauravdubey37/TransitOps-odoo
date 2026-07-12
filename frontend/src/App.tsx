@@ -21,6 +21,7 @@ import { FuelLogs } from './pages/fuel/FuelLogs';
 import { ExpenseList } from './pages/expenses/ExpenseList';
 import { MaintenanceList } from './pages/maintenance/MaintenanceList';
 import { AnalyticsDashboard } from './pages/analytics/AnalyticsDashboard';
+import { ReportsExport } from './pages/reports/ReportsExport';
 import { DriverPortalDashboard } from './pages/driver-portal/DriverPortalDashboard';
 import { DriverTrips } from './pages/driver-portal/DriverTrips';
 import { DriverVoice } from './pages/driver-portal/DriverVoice';
@@ -96,7 +97,7 @@ function App() {
                 <Route path="/expenses" element={<ExpenseList />} />
                 <Route path="/maintenance" element={<MaintenanceList />} />
                 <Route path="/analytics" element={<AnalyticsDashboard />} />
-                <Route path="/reports" element={<div className="p-6 font-semibold">Reports Module (Prototype placeholder)</div>} />
+                <Route path="/reports" element={<ReportsExport />} />
               </Route>
 
               {/* Driver Mobile Portal */}
