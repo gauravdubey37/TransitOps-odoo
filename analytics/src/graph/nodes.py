@@ -47,4 +47,25 @@ class NodeManager:
         """
         neo4j_client.execute_write(query, **trip_data)
 
+    @staticmethod
+    def merge_route(route_data: dict):
+        query = """
+        MERGE (r:Route {route_id: $route_id})
+        SET r.start_point = $start_point,
+            r.end_point = $end_point,
+            r.distance = $distance,
+            r.typical_duration = $typical_duration
+        """
+        neo4j_client.execute_write(query, **route_data)
+
+    @staticmethod
+    def merge_depot(depot_data: dict):
+        query = """
+        MERGE (d:Depot {depot_id: $depot_id})
+        SET d.name = $name,
+            d.location = $location,
+            d.capacity = $capacity
+        """
+        neo4j_client.execute_write(query, **depot_data)
+
 node_manager = NodeManager()
