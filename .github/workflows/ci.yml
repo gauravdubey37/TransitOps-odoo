@@ -19,6 +19,11 @@ jobs:
       - name: Validate Dev Compose
         run: docker compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml config
 
+      - name: Validate Prod Compose
+        run: |
+          docker compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml config
+          docker compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml -f docker/docker-compose.prod.yml config
+
       - name: Validate environment template
         run: test -f .env.example
 

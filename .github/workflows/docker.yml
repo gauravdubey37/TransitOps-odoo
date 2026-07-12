@@ -23,6 +23,7 @@ jobs:
           docker compose -f docker/docker-compose.yml config --quiet
           docker compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml config --quiet
           docker compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml config --quiet
+          docker compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml -f docker/docker-compose.prod.yml config --quiet
 
       - name: Verify container names
         run: |
@@ -57,9 +58,15 @@ jobs:
       - name: Test Neo4j connectivity
         run: |
           for i in $(seq 1 60); do
-            curl -sf http://localhost:7474 && break
+            if curl -sf http://localhost:7474 >/dev/null; then
+              echo "Neo4j is ready"
+              exit 0
+            fi
             sleep 2
           done
+          echo "Neo4j failed to become ready"
+          docker logs transitops-neo4j
+          exit 1
 
       - name: Cleanup
         if: always()
