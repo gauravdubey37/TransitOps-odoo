@@ -1,0 +1,62 @@
+-- Seed: Lookup reference data (idempotent)
+-- Profile: all environments
+
+INSERT INTO vehicle_classes (class_id, class_name) VALUES
+    ('c0000000-0000-4000-8000-000000000001', 'Motorcycle'),
+    ('c0000000-0000-4000-8000-000000000002', 'Scooter'),
+    ('c0000000-0000-4000-8000-000000000003', 'Car'),
+    ('c0000000-0000-4000-8000-000000000004', 'Sedan'),
+    ('c0000000-0000-4000-8000-000000000005', 'SUV'),
+    ('c0000000-0000-4000-8000-000000000006', 'Pickup'),
+    ('c0000000-0000-4000-8000-000000000007', 'Mini Truck'),
+    ('c0000000-0000-4000-8000-000000000008', 'Truck'),
+    ('c0000000-0000-4000-8000-000000000009', 'Heavy Truck'),
+    ('c0000000-0000-4000-8000-000000000010', 'Trailer'),
+    ('c0000000-0000-4000-8000-000000000011', 'Bus'),
+    ('c0000000-0000-4000-8000-000000000012', 'Mini Bus'),
+    ('c0000000-0000-4000-8000-000000000013', 'Electric Vehicle')
+ON CONFLICT (class_name) DO NOTHING;
+
+INSERT INTO fuel_types (fuel_type_id, fuel_type_name) VALUES
+    ('d0000000-0000-4000-8000-000000000001', 'Petrol'),
+    ('d0000000-0000-4000-8000-000000000002', 'Diesel'),
+    ('d0000000-0000-4000-8000-000000000003', 'CNG'),
+    ('d0000000-0000-4000-8000-000000000004', 'LNG'),
+    ('d0000000-0000-4000-8000-000000000005', 'Electric'),
+    ('d0000000-0000-4000-8000-000000000006', 'Hybrid'),
+    ('d0000000-0000-4000-8000-000000000007', 'Hydrogen')
+ON CONFLICT (fuel_type_name) DO NOTHING;
+
+INSERT INTO maintenance_types (maintenance_type_id, type_name) VALUES
+    ('e0000000-0000-4000-8000-000000000001', 'Oil Change'),
+    ('e0000000-0000-4000-8000-000000000002', 'General Service'),
+    ('e0000000-0000-4000-8000-000000000003', 'Brake Inspection'),
+    ('e0000000-0000-4000-8000-000000000004', 'Engine Repair'),
+    ('e0000000-0000-4000-8000-000000000005', 'Transmission Service'),
+    ('e0000000-0000-4000-8000-000000000006', 'Battery Replacement'),
+    ('e0000000-0000-4000-8000-000000000007', 'Tire Replacement'),
+    ('e0000000-0000-4000-8000-000000000008', 'Alignment'),
+    ('e0000000-0000-4000-8000-000000000009', 'Cleaning'),
+    ('e0000000-0000-4000-8000-000000000010', 'Inspection')
+ON CONFLICT (type_name) DO NOTHING;
+
+INSERT INTO expense_categories (category_id, category_name) VALUES
+    ('f0000000-0000-4000-8000-000000000001', 'Fuel'),
+    ('f0000000-0000-4000-8000-000000000002', 'Food'),
+    ('f0000000-0000-4000-8000-000000000003', 'Accommodation'),
+    ('f0000000-0000-4000-8000-000000000004', 'Parking'),
+    ('f0000000-0000-4000-8000-000000000005', 'Repair'),
+    ('f0000000-0000-4000-8000-000000000006', 'Toll'),
+    ('f0000000-0000-4000-8000-000000000007', 'Miscellaneous')
+ON CONFLICT (category_name) DO NOTHING;
+
+INSERT INTO notification_types (notification_type_id, type_name) VALUES
+    ('g0000000-0000-4000-8000-000000000001', 'Maintenance Due'),
+    ('g0000000-0000-4000-8000-000000000002', 'Insurance Expiry'),
+    ('g0000000-0000-4000-8000-000000000003', 'License Expiry'),
+    ('g0000000-0000-4000-8000-000000000004', 'PUC Expiry'),
+    ('g0000000-0000-4000-8000-000000000005', 'Trip Assigned'),
+    ('g0000000-0000-4000-8000-000000000006', 'Trip Completed'),
+    ('g0000000-0000-4000-8000-000000000007', 'Fatigue Alert'),
+    ('g0000000-0000-4000-8000-000000000008', 'System Alert')
+ON CONFLICT (type_name) DO NOTHING;
