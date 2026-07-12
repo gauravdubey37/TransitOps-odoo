@@ -1,6 +1,8 @@
 import logging
 from src.core.backend_client import backend_client
 from src.core.neo4j_client import neo4j_client
+from src.graph.nodes import node_manager
+from src.graph.relationships import relationship_manager
 
 logger = logging.getLogger(__name__)
 
@@ -35,32 +37,56 @@ class GraphSynchronizer:
         logger.info("Full Graph Synchronization Completed")
 
     def _sync_drivers(self):
-        # Implementation details will go here
         logger.info("Syncing Drivers...")
-        pass
+        drivers = self.backend.fetch_data("drivers")
+        for driver in drivers:
+            node_manager.merge_driver(driver)
 
     def _sync_vehicles(self):
         logger.info("Syncing Vehicles...")
-        pass
+        vehicles = self.backend.fetch_data("vehicles")
+        for vehicle in vehicles:
+            node_manager.merge_vehicle(vehicle)
 
     def _sync_infrastructure(self):
         logger.info("Syncing Infrastructure...")
-        pass
+        depots = self.backend.fetch_data("depots")
+        for depot in depots:
+            node_manager.merge_depot(depot)
+        # Note: Regions omitted from MVP backend fetch, handled in future scaling
 
     def _sync_routes(self):
         logger.info("Syncing Routes...")
-        pass
+        routes = self.backend.fetch_data("routes")
+        for route in routes:
+            node_manager.merge_route(route)
 
     def _sync_trips(self):
         logger.info("Syncing Trips...")
-        pass
+        trips = self.backend.fetch_data("trips")
+        for trip in trips:
+            node_manager.merge_trip(trip)
 
     def _sync_operations(self):
         logger.info("Syncing Operations...")
-        pass
+        fuels = self.backend.fetch_data("fuel")
+        for f in fuels:
+            node_manager.merge_fuel_log(f)
+            
+        expenses = self.backend.fetch_data("expenses")
+        for e in expenses:
+            node_manager.merge_expense(e)
 
     def _create_relationships(self):
         logger.info("Creating Relationships...")
-        pass
+        # Relationships are inherently built from the connected operational data.
+        # This will be refined as backend returns nested IDs.
+        # Examples:
+        trips = self.backend.fetch_data("trips")
+        for trip in trips:
+            if "driver_id" in trip:
+                relationship_manager.create_driver_trip_completion(trip["driver_id"], trip["trip_id"])
+            if "vehicle_id" in trip:
+                relationship_manager.create_trip_vehicle_usage(trip["trip_id"], trip["vehicle_id"])
 
 synchronizer = GraphSynchronizer()
