@@ -17,6 +17,12 @@ export class DriverService {
     return this.repository.findById(id);
   }
 
+  async isDriverAvailable(id: string): Promise<boolean> {
+    const driver = await this.getDriverById(id);
+    if (!driver) return false;
+    return driver.driver_status === 'Available';
+  }
+
   async createDriver(data: CreateDriverDTO): Promise<DriverEntity> {
     // Business Rule: Ensure employee code is unique
     const existingDriver = await this.repository.findByEmployeeCode(data.employee_code);

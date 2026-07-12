@@ -17,6 +17,12 @@ export class VehicleService {
     return this.repository.findById(id);
   }
 
+  async isVehicleAvailable(id: string): Promise<boolean> {
+    const vehicle = await this.getVehicleById(id);
+    if (!vehicle) return false;
+    return vehicle.status === 'Available';
+  }
+
   async createVehicle(data: CreateVehicleDTO): Promise<VehicleEntity> {
     // Business Rule: Ensure registration number is unique
     const existingVehicle = await this.repository.findByRegistration(data.registration_number);
