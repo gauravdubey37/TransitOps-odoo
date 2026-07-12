@@ -3,7 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
 import { Driver } from '../../types';
-import { Award, Star, Compass, AlertCircle } from 'lucide-react';
+import { Star, AlertCircle } from 'lucide-react';
 
 export const DriverPortalDashboard: React.FC = () => {
   const { user } = useAuth();
