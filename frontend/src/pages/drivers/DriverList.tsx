@@ -4,7 +4,7 @@ import { api } from '../../lib/api';
 import { Driver } from '../../types';
 import { DataTable } from '../../components/shared/DataTable';
 import { StatusBadge } from '../../components/shared/StatusBadge';
-import { Users, UserPlus, AlertCircle, ShieldAlert, Star } from 'lucide-react';
+import { Users, UserPlus, ShieldAlert, Star } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -25,7 +25,7 @@ export const DriverList: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedDriver, setSelectedDriver] = useState<Driver | null>(null);
 
-  const { data: drivers = [], isLoading } = useQuery<Driver[]>({
+  const { data: drivers = [] } = useQuery<Driver[]>({
     queryKey: ['drivers'],
     queryFn: () => api.get<Driver[]>('/drivers'),
   });
