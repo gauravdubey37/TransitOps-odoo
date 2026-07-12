@@ -1,0 +1,60 @@
+networks:
+  transitops-network:
+    name: transitops-network
+    driver: bridge
+
+volumes:
+  postgres-data:
+    name: transitops-postgres-data
+  neo4j-data:
+    name: transitops-neo4j-data
+  neo4j-logs:
+    name: transitops-neo4j-logs
+  uploads-data:
+    name: transitops-uploads
+  backup-data:
+    name: transitops-backup
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: transitops-postgres
+    restart: unless-stopped
+    networks:
+      - transitops-network
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-transitops}
+      POSTGRES_USER: ${POSTGRES_USER:-transitops}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-transitops_dev}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-transitops} -d ${POSTGRES_DB:-transitops}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  neo4j:
+    image: neo4j:5-community
+    container_name: transitops-neo4j
+    restart: unless-stopped
+    networks:
+      - transitops-network
+    volumes:
+      - neo4j-data:/data
+      - neo4j-logs:/logs
+      - ./neo4j/neo4j.conf:/conf/neo4j.conf:ro
+    environment:
+      NEO4J_AUTH: ${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:-transitops_dev}
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*
+      NEO4J_dbms_security_procedures_allowlist: apoc.*
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:7474 || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
