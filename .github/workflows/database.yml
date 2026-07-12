@@ -1,0 +1,80 @@
+name: Database
+
+on:
+  push:
+    branches: [infrastructure]
+    paths:
+      - 'database/**'
+      - '.github/workflows/database.yml'
+  pull_request:
+    branches: [main, infrastructure]
+    paths:
+      - 'database/**'
+
+jobs:
+  migrations:
+    name: Migration Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: transitops
+          POSTGRES_USER: transitops
+          POSTGRES_PASSWORD: transitops_dev
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U transitops -d transitops"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Wait for PostgreSQL
+        env:
+          PGPASSWORD: transitops_dev
+        run: |
+          for i in $(seq 1 30); do
+            if pg_isready -h localhost -p 5432 -U transitops -d transitops; then
+              echo "PostgreSQL is ready"
+              exit 0
+            fi
+            echo "Waiting for PostgreSQL... ($i/30)"
+            sleep 2
+          done
+          exit 1
+
+      - name: Apply all migrations
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PASSWORD: transitops_dev
+        run: bash database/scripts/migrate.sh
+
+      - name: Verify migration count
+        env:
+          PGPASSWORD: transitops_dev
+        run: |
+          count=$(psql -h localhost -U transitops -d transitops -t -A -c "SELECT COUNT(*) FROM schema_migrations;")
+          echo "Applied migrations: ${count}"
+          test "${count}" -ge 29
+
+      - name: Validate schema
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PASSWORD: transitops_dev
+        run: bash database/scripts/validate.sh
+
+      - name: Test seed idempotency
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PASSWORD: transitops_dev
+          ADMIN_PASSWORD: testpassword
+        run: |
+          bash database/scripts/seed.sh
+          bash database/scripts/seed.sh

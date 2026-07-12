@@ -1,0 +1,23 @@
+services:
+  postgres:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+  neo4j:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+
+  # App service production overrides (backend, analytics, frontend) are applied
+  # together with docker-compose.dev.yml once application code is available:
+  #
+  # docker compose \
+  #   -f docker/docker-compose.yml \
+  #   -f docker/docker-compose.dev.yml \
+  #   -f docker/docker-compose.prod.yml \
+  #   up -d

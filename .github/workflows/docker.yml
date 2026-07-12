@@ -1,0 +1,73 @@
+name: Docker
+
+on:
+  push:
+    branches: [infrastructure]
+    paths:
+      - 'docker/**'
+      - '.github/workflows/docker.yml'
+  pull_request:
+    branches: [main, infrastructure]
+    paths:
+      - 'docker/**'
+
+jobs:
+  validate:
+    name: Docker Configuration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint Docker Compose
+        run: |
+          docker compose -f docker/docker-compose.yml config --quiet
+          docker compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml config --quiet
+          docker compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml config --quiet
+          docker compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml -f docker/docker-compose.prod.yml config --quiet
+
+      - name: Verify container names
+        run: |
+          docker compose -f docker/docker-compose.yml config | grep -q "transitops-postgres"
+          docker compose -f docker/docker-compose.yml config | grep -q "transitops-neo4j"
+
+      - name: Verify health checks
+        run: |
+          docker compose -f docker/docker-compose.yml config | grep -q "healthcheck"
+
+      - name: Verify network
+        run: |
+          docker compose -f docker/docker-compose.yml config | grep -q "transitops-network"
+
+  integration:
+    name: Container Integration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start containers
+        run: docker compose -f docker/docker-compose.yml up -d
+
+      - name: Test PostgreSQL connectivity
+        run: |
+          for i in $(seq 1 30); do
+            docker exec transitops-postgres pg_isready -U transitops && break
+            sleep 2
+          done
+          docker exec transitops-postgres psql -U transitops -d transitops -c "SELECT 1;"
+
+      - name: Test Neo4j connectivity
+        run: |
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:7474 >/dev/null; then
+              echo "Neo4j is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Neo4j failed to become ready"
+          docker logs transitops-neo4j
+          exit 1
+
+      - name: Cleanup
+        if: always()
+        run: docker compose -f docker/docker-compose.yml down -v

@@ -31,18 +31,33 @@ TransitOps/
 ├── backend/
 ├── analytics/
 ├── database/
+├── docker/              # Docker Compose, Dockerfiles, DB init config
 ├── docs/
 ├── agents/
-├── scripts/
+├── scripts/             # Dev scripts (.sh and setup.ps1)
 ├── tests/
+├── .github/             # CI/CD workflows
 
 ├── README.md
 ├── LICENSE
 ├── .gitignore
 ├── .editorconfig
 ├── .env.example
-├── docker-compose.yml (optional future)
-└── package.json
+└── package.json         # (future root workspace)
+```
+
+Docker Compose files live in `docker/` (not the repository root):
+
+```text
+docker/
+├── docker-compose.yml
+├── docker-compose.dev.yml
+├── docker-compose.prod.yml
+├── Dockerfile.backend
+├── Dockerfile.frontend
+├── Dockerfile.analytics
+├── postgres/init.sql
+└── neo4j/neo4j.conf
 ```
 
 ---
