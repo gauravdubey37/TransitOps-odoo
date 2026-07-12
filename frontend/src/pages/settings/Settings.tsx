@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api';
-import { SystemSettings, User } from '../../types';
+import type { SystemSettings, User } from '../../types';
 import { DataTable } from '../../components/shared/DataTable';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
