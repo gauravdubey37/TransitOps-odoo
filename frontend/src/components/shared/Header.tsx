@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
-import { Bell, Sun, Moon, LogOut, User as UserIcon, Search, Check } from 'lucide-react';
+import { Bell, Sun, Moon, LogOut, Search, Check } from 'lucide-react';
 import { api } from '../../lib/api';
 import { Notification } from '../../types';
 
