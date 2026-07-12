@@ -15,6 +15,9 @@ import vehicleRoutes from './modules/vehicle/routes';
 import tripRoutes from './modules/trip/routes';
 import depotRoutes from './modules/depot/routes';
 import routeRoutes from './modules/route/routes';
+import authRoutes from './modules/auth/routes';
+import userRoutes from './modules/user/routes';
+import { authMiddleware } from './middleware/auth.middleware';
 
 // Base Route
 app.get('/api/v1/health', (req, res) => {
@@ -24,12 +27,16 @@ app.get('/api/v1/health', (req, res) => {
   });
 });
 
-// Module Routes
-app.use('/api/v1/drivers', driverRoutes);
-app.use('/api/v1/vehicles', vehicleRoutes);
-app.use('/api/v1/trips', tripRoutes);
-app.use('/api/v1/depots', depotRoutes);
-app.use('/api/v1/routes', routeRoutes);
+// Public Module Routes
+app.use('/api/v1/auth', authRoutes);
+
+// Protected Module Routes
+app.use('/api/v1/users', authMiddleware, userRoutes);
+app.use('/api/v1/drivers', authMiddleware, driverRoutes);
+app.use('/api/v1/vehicles', authMiddleware, vehicleRoutes);
+app.use('/api/v1/trips', authMiddleware, tripRoutes);
+app.use('/api/v1/depots', authMiddleware, depotRoutes);
+app.use('/api/v1/routes', authMiddleware, routeRoutes);
 
 // Error handling middleware MUST be last
 app.use(errorMiddleware);
