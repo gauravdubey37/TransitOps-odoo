@@ -29,6 +29,25 @@ log() {
     echo "[migrate] $(date -u +"%Y-%m-%dT%H:%M:%SZ") $*"
 }
 
+wait_for_postgres() {
+    local max_attempts=30
+    local attempt=1
+
+    while [ "${attempt}" -le "${max_attempts}" ]; do
+        if ${PSQL} -c "SELECT 1;" >/dev/null 2>&1; then
+            log "PostgreSQL connection established"
+            return 0
+        fi
+
+        log "Waiting for PostgreSQL... (${attempt}/${max_attempts})"
+        sleep 2
+        attempt=$((attempt + 1))
+    done
+
+    log "ERROR Could not connect to PostgreSQL at ${POSTGRES_HOST}:${POSTGRES_PORT}"
+    exit 1
+}
+
 ensure_migrations_table() {
     ${PSQL} -q <<'SQL'
 CREATE TABLE IF NOT EXISTS schema_migrations (
@@ -108,6 +127,7 @@ rollback_migration() {
 }
 
 run_migrate() {
+    wait_for_postgres
     ensure_migrations_table
 
     local files
