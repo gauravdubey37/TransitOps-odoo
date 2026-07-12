@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api';
-import { Driver } from '../../types';
+import type { Driver } from '../../types';
 import { DataTable } from '../../components/shared/DataTable';
 import { StatusBadge } from '../../components/shared/StatusBadge';
 import { Users, UserPlus, ShieldAlert, Star } from 'lucide-react';
@@ -15,7 +15,7 @@ const driverSchema = z.object({
   licenseNumber: z.string().min(5, 'License number is required'),
   licenseExpiry: z.string().nonempty('Expiry date is required'),
   insuranceExpiry: z.string().nonempty('Insurance expiry is required'),
-  depotId: z.string().default('depot-001'),
+  depotId: z.string().min(1, 'Depot is required'),
 });
 
 type DriverFormValues = z.infer<typeof driverSchema>;
@@ -46,6 +46,9 @@ export const DriverList: React.FC = () => {
     formState: { errors },
   } = useForm<DriverFormValues>({
     resolver: zodResolver(driverSchema),
+    defaultValues: {
+      depotId: 'depot-001',
+    },
   });
 
   const onSubmit = (values: DriverFormValues) => {
