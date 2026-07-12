@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api';
-import { Trip, FuelLog, Expense } from '../../types';
+import type { Trip, FuelLog, Expense } from '../../types';
 import { StatusBadge } from '../../components/shared/StatusBadge';
 import { MapPin, Navigation, DollarSign, Fuel, CheckCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
