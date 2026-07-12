@@ -52,7 +52,7 @@ seed_admin_user() {
     ${PSQL} -q <<SQL
 INSERT INTO users (user_id, full_name, email, password_hash, role_id, is_active)
 VALUES (
-    'u0000000-0000-4000-8000-000000000001',
+    'a6000000-0000-4000-8000-000000000001',
     'System Administrator',
     '${ADMIN_EMAIL}',
     crypt('${ADMIN_PASSWORD}', gen_salt('bf', 10)),
