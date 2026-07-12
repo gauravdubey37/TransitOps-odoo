@@ -3,6 +3,7 @@ from src.recommendations.recommendation_engine import recommendation_engine
 from src.explainability.explainer import explainer
 from src.cache.analytics_cache import analytics_cache
 from pydantic import BaseModel
+from src.core.neo4j_client import neo4j_client
 
 router = APIRouter(prefix="/recommendations", tags=["Recommendations"])
 
@@ -36,12 +37,19 @@ def get_driver_recommendations(req: DriverRecommendationRequest):
 
 @router.get("/")
 def get_all_recommendations():
-    return {"status": "ok", "message": "Bulk recommendations returning mock active recs", "data": []}
+    records = neo4j_client.execute_read("MATCH (r:Recommendation {status: 'active'}) RETURN r")
+    data = [rec["r"] for rec in records] if records else []
+    return {"status": "ok", "data": data}
 
 @router.get("/history")
 def get_recommendation_history():
-    return {"status": "ok", "message": "Historical recommendations returning mock resolved recs", "data": []}
+    records = neo4j_client.execute_read("MATCH (r:Recommendation {status: 'resolved'}) RETURN r")
+    data = [rec["r"] for rec in records] if records else []
+    return {"status": "ok", "data": data}
 
 @router.get("/{rec_id}")
 def get_recommendation(rec_id: str):
-    return {"status": "ok", "message": f"Details for recommendation {rec_id}"}
+    records = neo4j_client.execute_read("MATCH (r:Recommendation {rec_id: $rec_id}) RETURN r", rec_id=rec_id)
+    if not records:
+        return {"status": "error", "message": "Recommendation not found"}
+    return {"status": "ok", "data": records[0]["r"]}
