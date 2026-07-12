@@ -3,7 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { Bell, Sun, Moon, LogOut, Search, Check } from 'lucide-react';
 import { api } from '../../lib/api';
-import { Notification } from '../../types';
+import type { Notification } from '../../types';
 
 export const Header: React.FC = () => {
   const { user, logout } = useAuth();
