@@ -6,19 +6,15 @@ import { DriverService } from '../../driver/service';
 import { VehicleService } from '../../vehicle/service';
 import { TRIP_STATUS } from '../constants';
 
-vi.mock('../repository');
-vi.mock('../../driver/service');
-vi.mock('../../vehicle/service');
-
 describe('Trip API', () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe('GET /api/v1/trips', () => {
     it('should return all trips', async () => {
-      TripRepository.prototype.findAll = vi.fn().mockResolvedValue([
-        { trip_id: 't123', status: TRIP_STATUS.PLANNED }
+      vi.spyOn(TripRepository.prototype, 'findAll').mockResolvedValue([
+        { trip_id: 't123', status: TRIP_STATUS.PLANNED } as any
       ]);
 
       const response = await request(app).get('/api/v1/trips');
@@ -38,14 +34,14 @@ describe('Trip API', () => {
     };
 
     it('should create a trip if validation passes', async () => {
-      DriverService.prototype.isDriverAvailable = vi.fn().mockResolvedValue(true);
-      VehicleService.prototype.isVehicleAvailable = vi.fn().mockResolvedValue(true);
-      TripRepository.prototype.hasActiveTrip = vi.fn().mockResolvedValue(false);
-      TripRepository.prototype.create = vi.fn().mockResolvedValue({
+      vi.spyOn(DriverService.prototype, 'isDriverAvailable').mockResolvedValue(true);
+      vi.spyOn(VehicleService.prototype, 'isVehicleAvailable').mockResolvedValue(true);
+      vi.spyOn(TripRepository.prototype, 'hasActiveTrip').mockResolvedValue(false);
+      vi.spyOn(TripRepository.prototype, 'create').mockResolvedValue({
         trip_id: 't123',
         ...validPayload,
         status: TRIP_STATUS.PLANNED
-      });
+      } as any);
 
       const response = await request(app)
         .post('/api/v1/trips')
@@ -57,7 +53,8 @@ describe('Trip API', () => {
     });
 
     it('should fail if driver is not available', async () => {
-      DriverService.prototype.isDriverAvailable = vi.fn().mockResolvedValue(false);
+      vi.spyOn(DriverService.prototype, 'isDriverAvailable').mockResolvedValue(false);
+      vi.spyOn(VehicleService.prototype, 'isVehicleAvailable').mockResolvedValue(true);
 
       const response = await request(app)
         .post('/api/v1/trips')
@@ -69,13 +66,13 @@ describe('Trip API', () => {
     });
 
     it('should fail if vehicle is already in active trip', async () => {
-      DriverService.prototype.isDriverAvailable = vi.fn().mockResolvedValue(true);
-      VehicleService.prototype.isVehicleAvailable = vi.fn().mockResolvedValue(true);
+      vi.spyOn(DriverService.prototype, 'isDriverAvailable').mockResolvedValue(true);
+      vi.spyOn(VehicleService.prototype, 'isVehicleAvailable').mockResolvedValue(true);
       
       // Mock driver is NOT active, but vehicle IS active
-      TripRepository.prototype.hasActiveTrip = vi.fn().mockImplementation((type) => {
-         if (type === 'vehicle_id') return Promise.resolve(true);
-         return Promise.resolve(false);
+      vi.spyOn(TripRepository.prototype, 'hasActiveTrip').mockImplementation(async (type) => {
+         if (type === 'vehicle_id') return true;
+         return false;
       });
 
       const response = await request(app)
@@ -88,3 +85,4 @@ describe('Trip API', () => {
     });
   });
 });
+

@@ -4,17 +4,15 @@ import { app } from '../../../app';
 import { VehicleRepository } from '../repository';
 import { VEHICLE_CLASS, FUEL_TYPE, VEHICLE_STATUS } from '../constants';
 
-vi.mock('../repository');
-
 describe('Vehicle API', () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe('GET /api/v1/vehicles', () => {
     it('should return all vehicles', async () => {
-      VehicleRepository.prototype.findAll = vi.fn().mockResolvedValue([
-        { vehicle_id: 'v123', registration_number: 'MH-12-AB-1234' }
+      vi.spyOn(VehicleRepository.prototype, 'findAll').mockResolvedValue([
+        { vehicle_id: 'v123', registration_number: 'MH-12-AB-1234' } as any
       ]);
 
       const response = await request(app).get('/api/v1/vehicles');
@@ -38,12 +36,12 @@ describe('Vehicle API', () => {
     };
 
     it('should create a vehicle with valid payload', async () => {
-      VehicleRepository.prototype.findByRegistration = vi.fn().mockResolvedValue(null);
-      VehicleRepository.prototype.create = vi.fn().mockResolvedValue({
+      vi.spyOn(VehicleRepository.prototype, 'findByRegistration').mockResolvedValue(null);
+      vi.spyOn(VehicleRepository.prototype, 'create').mockResolvedValue({
         vehicle_id: 'v123',
         ...validPayload,
         status: VEHICLE_STATUS.AVAILABLE
-      });
+      } as any);
 
       const response = await request(app)
         .post('/api/v1/vehicles')
@@ -55,7 +53,7 @@ describe('Vehicle API', () => {
     });
 
     it('should fail if registration number already exists', async () => {
-      VehicleRepository.prototype.findByRegistration = vi.fn().mockResolvedValue({ vehicle_id: 'v456' });
+      vi.spyOn(VehicleRepository.prototype, 'findByRegistration').mockResolvedValue({ vehicle_id: 'v456' } as any);
 
       const response = await request(app)
         .post('/api/v1/vehicles')
@@ -77,3 +75,4 @@ describe('Vehicle API', () => {
     });
   });
 });
+

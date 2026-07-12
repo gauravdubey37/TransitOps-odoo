@@ -1,22 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import request from 'supertest';
 import { app } from '../../../app';
-import { DriverService } from '../service';
 import { DriverRepository } from '../repository';
-
-// Mock the repository
-vi.mock('../repository');
 
 describe('Driver API', () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe('GET /api/v1/drivers', () => {
     it('should return all drivers', async () => {
-      // Mock repository response
-      DriverRepository.prototype.findAll = vi.fn().mockResolvedValue([
-        { driver_id: '123', first_name: 'John', last_name: 'Doe' }
+      vi.spyOn(DriverRepository.prototype, 'findAll').mockResolvedValue([
+        { driver_id: '123', first_name: 'John', last_name: 'Doe' } as any
       ]);
 
       const response = await request(app).get('/api/v1/drivers');
@@ -28,12 +23,12 @@ describe('Driver API', () => {
 
   describe('POST /api/v1/drivers', () => {
     it('should create a driver with valid payload', async () => {
-      DriverRepository.prototype.findByEmployeeCode = vi.fn().mockResolvedValue(null);
-      DriverRepository.prototype.create = vi.fn().mockResolvedValue({
+      vi.spyOn(DriverRepository.prototype, 'findByEmployeeCode').mockResolvedValue(null);
+      vi.spyOn(DriverRepository.prototype, 'create').mockResolvedValue({
         driver_id: '123',
         employee_code: 'EMP001',
         first_name: 'John'
-      });
+      } as any);
 
       const response = await request(app)
         .post('/api/v1/drivers')
@@ -62,3 +57,4 @@ describe('Driver API', () => {
     });
   });
 });
+

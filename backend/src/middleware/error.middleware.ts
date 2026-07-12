@@ -9,9 +9,10 @@ export const errorMiddleware = (
   next: NextFunction
 ) => {
   // Handle Zod Validation Errors
-  if (err instanceof ZodError) {
-    const errors = err.errors.map((e) => ({
-      field: e.path.join('.'),
+  if (err instanceof ZodError || err.name === 'ZodError') {
+    const issues = err.issues || err.errors || [];
+    const errors = issues.map((e: any) => ({
+      field: e.path ? e.path.join('.') : 'unknown',
       message: e.message
     }));
     return sendError(res, 'Validation failed', 400, errors);
