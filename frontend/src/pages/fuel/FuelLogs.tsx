@@ -76,30 +76,30 @@ export const FuelLogs: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-display">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">Fuel Administration</h1>
-        <p className="text-xs text-muted-foreground">Monitor fleet refueling logs, efficiency expenditures, and location consumption stats.</p>
+        <h1 className="text-2xl font-black uppercase tracking-wider text-foreground">Diesel Logbook (Fuel Register)</h1>
+        <p className="text-xs text-muted-foreground">Log and inspect diesel fillups, pump station locations, and fleet fuel expenses.</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
         <KPICard
-          title="Total Liters Refilled"
+          title="Total Diesel Refilled"
           value={`${totalLiters.toLocaleString()} L`}
           icon={<Droplet className="h-4 w-4" />}
-          comparisonText="Cumulative volume refilled"
+          comparisonText="Cumulative depot volume"
         />
         <KPICard
-          title="Total Expenditures"
+          title="Total Fuel Expenses"
           value={`₹${totalCost.toLocaleString()}`}
           icon={<DollarSign className="h-4 w-4" />}
           comparisonText="Total refueling costs"
         />
         <KPICard
-          title="Average Cost / L"
+          title="Average Cost / Litre"
           value={`₹${avgCostPerLiter}`}
           icon={<Fuel className="h-4 w-4" />}
-          comparisonText="Average unit price across log"
+          comparisonText="Average unit price across pump logs"
         />
       </div>
 
