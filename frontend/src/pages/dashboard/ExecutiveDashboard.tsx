@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
 import type { Trip, Vehicle, Driver, Notification } from '../../types';
 import { KPICard } from '../../components/shared/KPICard';
-import { DataTable } from '../../components/shared/DataTable';
 import { StatusBadge } from '../../components/shared/StatusBadge';
 import {
   Truck,
@@ -75,36 +74,6 @@ export const ExecutiveDashboard: React.FC = () => {
     { name: 'Fri', trips: 22, carbon: 730 },
     { name: 'Sat', trips: 10, carbon: 350 },
     { name: 'Sun', trips: 8, carbon: 280 },
-  ];
-
-  const activeTripColumns = [
-    { 
-      header: 'Trip Number', 
-      accessor: (row: Trip) => <span className="font-mono text-primary font-medium">{row.tripNumber}</span> 
-    },
-    { header: 'Driver', accessor: 'driverName' as keyof Trip },
-    { 
-      header: 'Vehicle', 
-      accessor: (row: Trip) => <span className="font-mono">{row.vehiclePlate}</span> 
-    },
-    { header: 'Destination', accessor: 'destination' as keyof Trip },
-    {
-      header: 'Status',
-      accessor: (row: Trip) => <StatusBadge status={row.status} />,
-    },
-    {
-      header: 'Progress',
-      accessor: (row: Trip) => (
-        <div className="w-24">
-          <div className="flex justify-between text-[10px] text-muted-foreground mb-0.5">
-            <span className="font-mono">{row.progress}%</span>
-          </div>
-          <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
-            <div className="h-full bg-primary transition-all duration-500 ease-out" style={{ width: `${row.progress}%` }} />
-          </div>
-        </div>
-      ),
-    },
   ];
 
   // AI recommendations (mocked based on data)
@@ -255,16 +224,52 @@ export const ExecutiveDashboard: React.FC = () => {
 
       {/* Tables and Alerts Grid */}
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Active Trips Table */}
-        <div className="lg:col-span-2">
-          <h2 className="text-sm font-semibold mb-3">Live Active Trip Logs</h2>
-          <DataTable
-            data={trips}
-            columns={activeTripColumns}
-            searchKey="tripNumber"
-            searchPlaceholder="Search active trip logs..."
-            rowsPerPage={4}
-          />
+        {/* Active Trips Center */}
+        <div className="lg:col-span-2 space-y-3">
+          <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
+            </span>
+            Live Operational Dispatch Center
+          </h2>
+          <div className="space-y-3">
+            {trips.length === 0 ? (
+              <div className="rounded-lg border border-white/[0.06] bg-[#131D2B] p-8 text-center text-xs text-muted-foreground">
+                🚛 No Active Trips. Create your first dispatch to begin monitoring.
+              </div>
+            ) : (
+              trips.slice(0, 3).map(trip => (
+                <div key={trip.id} className="rounded-lg border border-white/[0.06] bg-[#131D2B] p-4 hover:border-white/[0.12] transition-all flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs font-bold text-white tracking-wide">{trip.tripNumber}</span>
+                      <StatusBadge status={trip.status} />
+                    </div>
+                    <p className="text-[11px] text-muted-foreground">
+                      Route: <strong className="text-white font-medium">{trip.origin} ➔ {trip.destination}</strong> ({trip.route})
+                    </p>
+                    <div className="flex gap-4 text-[10px] text-muted-foreground pt-1">
+                      <span>Driver: <strong className="text-white">{trip.driverName}</strong></span>
+                      <span>Vehicle: <strong className="text-white font-mono">{trip.vehiclePlate}</strong></span>
+                    </div>
+                  </div>
+                  <div className="w-full sm:w-48 space-y-1.5">
+                    <div className="flex justify-between text-[10px]">
+                      <span className="text-muted-foreground">Estimated Progress</span>
+                      <span className="font-mono text-white font-semibold">{trip.progress}%</span>
+                    </div>
+                    <div className="h-1.5 w-full rounded-full bg-white/[0.04] overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-primary to-cyan-400 transition-all duration-1000 ease-out animate-pulse" 
+                        style={{ width: `${trip.progress}%` }} 
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
 
         {/* Critical Alerts Center */}
