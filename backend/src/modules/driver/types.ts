@@ -63,3 +63,22 @@ export interface DriverInsuranceEntity {
   coverage_amount: number;
   document_path: string | null;
 }
+
+export interface DriverStatisticsDTO {
+  total_trips: number;
+  average_distance: number;
+  // placeholder
+}
+
+export interface FatigueDTO {
+  status: FatigueLevel;
+}
+
+export interface ExperienceDTO {
+  years: number;
+}
+
+export interface ComplianceDTO {
+  is_compliant: boolean;
+}
+
