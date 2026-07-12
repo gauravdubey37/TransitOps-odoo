@@ -9,7 +9,10 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.string().transform(Number).default('8080'),
   DATABASE_URL: z.string().url(),
-  JWT_SECRET: z.string().min(16)
+  DB_NAME: z.string().default('transitops'),
+  JWT_SECRET: z.string().default('super-secret-jwt-key-change-in-production'),
+  JWT_EXPIRES_IN: z.string().default('15m'),
+  REFRESH_TOKEN_EXPIRES_IN: z.string().default('7d'),
 });
 
 const _env = envSchema.safeParse(process.env);
