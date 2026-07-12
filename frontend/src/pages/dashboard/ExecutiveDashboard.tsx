@@ -147,6 +147,8 @@ export const ExecutiveDashboard: React.FC = () => {
           icon={<Navigation className="h-5 w-5" />}
           trend={{ value: 12, type: 'up' }}
           comparisonText="vs yesterday active count"
+          progress={78}
+          lastUpdated="Updated 3s ago"
           loading={loading}
         />
         <KPICard
@@ -155,6 +157,8 @@ export const ExecutiveDashboard: React.FC = () => {
           icon={<Truck className="h-5 w-5" />}
           trend={{ value: 4, type: 'up' }}
           comparisonText="active vehicles in operation"
+          progress={utilizationRate}
+          lastUpdated="Updated 5s ago"
           loading={loading}
         />
         <KPICard
@@ -163,6 +167,8 @@ export const ExecutiveDashboard: React.FC = () => {
           icon={<Users className="h-5 w-5" />}
           trend={{ value: 1, type: 'neutral' }}
           comparisonText="assigned to active routes"
+          progress={84}
+          lastUpdated="Updated 1m ago"
           loading={loading}
         />
         <KPICard
@@ -171,6 +177,8 @@ export const ExecutiveDashboard: React.FC = () => {
           icon={<Wrench className="h-5 w-5" />}
           trend={{ value: 25, type: 'down' }}
           comparisonText="completed repair orders"
+          progress={15}
+          lastUpdated="Updated 10m ago"
           loading={loading}
         />
       </div>
