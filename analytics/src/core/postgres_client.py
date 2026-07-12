@@ -36,4 +36,19 @@ class PostgresClient:
             logger.error(f"Error executing query: {e}")
             return []
 
+    def fetch_chunks(self, query: str, parameters: tuple = None, chunk_size: int = 1000):
+        """
+        Memory optimization: fetches large datasets in chunks.
+        """
+        if not self._connection or self._connection.closed:
+            self.connect()
+        with self._connection.cursor() as cursor:
+            cursor.execute(query, parameters)
+            columns = [desc[0] for desc in cursor.description]
+            while True:
+                rows = cursor.fetchmany(chunk_size)
+                if not rows:
+                    break
+                yield [dict(zip(columns, row)) for row in rows]
+
 postgres_client = PostgresClient()
