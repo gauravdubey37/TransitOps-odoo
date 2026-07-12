@@ -4,7 +4,7 @@ import { api } from '../../lib/api';
 import type { Trip, Driver, Vehicle } from '../../types';
 import { DataTable } from '../../components/shared/DataTable';
 import { StatusBadge } from '../../components/shared/StatusBadge';
-import { Navigation, Plus } from 'lucide-react';
+import { Navigation, Plus, Flame, AlertTriangle, MapPin, Building2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -160,29 +160,65 @@ export const TripList: React.FC = () => {
               </div>
 
               {/* Status Flow Timeline */}
-              <div className="relative border-l border-border pl-4 space-y-4">
+              <div className="relative border-l border-white/[0.06] pl-6 space-y-5">
+                {/* Depot Left Event */}
                 <div className="relative">
-                  <span className="absolute -left-[21px] mt-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-success text-[8px] font-bold text-success-foreground">✓</span>
-                  <p className="font-bold text-foreground">Dispatched</p>
-                  <p className="text-[10px] text-muted-foreground">Assigned to driver {selectedTrip.driverName}</p>
-                </div>
-                <div className="relative">
-                  <span className={`absolute -left-[21px] mt-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full text-[8px] font-bold ${
-                    selectedTrip.progress > 0 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                  }`}>
-                    {selectedTrip.progress > 0 ? '✓' : '2'}
+                  <span className="absolute -left-[33px] flex h-5 w-5 items-center justify-center rounded-full bg-success/10 border border-success/30 text-success text-[10px]">
+                    <Building2 className="h-3 w-3" />
                   </span>
-                  <p className="font-bold text-foreground">In Transit</p>
-                  <p className="text-[10px] text-muted-foreground">Progress currently at {selectedTrip.progress}%</p>
+                  <div className="flex justify-between items-baseline">
+                    <p className="font-bold text-white text-[11px]">Vehicle Left Depot</p>
+                    <span className="font-mono text-[9px] text-muted-foreground">09:24</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground">Dispatched from logistics depot and driver took shift control.</p>
                 </div>
+
+                {/* Fuel Logged Event */}
                 <div className="relative">
-                  <span className={`absolute -left-[21px] mt-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full text-[8px] font-bold ${
-                    selectedTrip.status === 'Completed' ? 'bg-success text-success-foreground' : 'bg-muted text-muted-foreground'
-                  }`}>
-                    {selectedTrip.status === 'Completed' ? '✓' : '3'}
+                  <span className="absolute -left-[33px] flex h-5 w-5 items-center justify-center rounded-full bg-warning/10 border border-warning/30 text-warning text-[10px]">
+                    <Flame className="h-3 w-3" />
                   </span>
-                  <p className="font-bold text-foreground">Completed</p>
-                  {selectedTrip.endDateTime && <p className="text-[10px] text-muted-foreground">Arrived at destination</p>}
+                  <div className="flex justify-between items-baseline">
+                    <p className="font-bold text-white text-[11px]">Fuel Refill Logged</p>
+                    <span className="font-mono text-[9px] text-muted-foreground">10:18</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground">42 Liters refueled at Highway Station NH-48.</p>
+                </div>
+
+                {/* Traffic Delay Alert Event */}
+                <div className="relative">
+                  <span className={`absolute -left-[33px] flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
+                    selectedTrip.status === 'Completed'
+                      ? 'bg-success/10 border border-success/30 text-success'
+                      : 'bg-destructive/10 border border-destructive/30 text-destructive animate-pulse'
+                  }`}>
+                    <AlertTriangle className="h-3 w-3" />
+                  </span>
+                  <div className="flex justify-between items-baseline">
+                    <p className="font-bold text-white text-[11px]">Traffic Delay Advisory</p>
+                    <span className="font-mono text-[9px] text-muted-foreground">12:14</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground">Rerouted automatically due to heavy bypass toll lane congestion.</p>
+                </div>
+
+                {/* Destination Reached Event */}
+                <div className="relative">
+                  <span className={`absolute -left-[33px] flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
+                    selectedTrip.status === 'Completed'
+                      ? 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-400'
+                      : 'bg-white/[0.02] border border-white/[0.06] text-muted-foreground'
+                  }`}>
+                    <MapPin className="h-3 w-3" />
+                  </span>
+                  <div className="flex justify-between items-baseline">
+                    <p className="font-bold text-[11px]">Destination Arrived</p>
+                    <span className="font-mono text-[9px] text-muted-foreground">13:02</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground">
+                    {selectedTrip.status === 'Completed'
+                      ? 'Shipment unloaded and cargo verified by recipient.'
+                      : 'Planned arrival destination window.'}
+                  </p>
                 </div>
               </div>
 
