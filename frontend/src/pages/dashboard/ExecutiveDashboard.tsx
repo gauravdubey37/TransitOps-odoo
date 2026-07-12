@@ -85,24 +85,24 @@ export const ExecutiveDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="flex items-center justify-between border-b border-border pb-4">
+      <div className="flex items-center justify-between border-b border-border pb-4 font-display">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-foreground">Good Morning, Himanshu</h1>
+          <h1 className="text-2xl font-black uppercase tracking-wider text-foreground">Depot Control Center • Delhi-NCR</h1>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs mt-1 text-muted-foreground">
-            <span className="text-success font-semibold flex items-center gap-1">
-              <span className="h-2 w-2 rounded-full bg-success animate-ping" />
-              Fleet Operating Normally
+            <span className="text-success font-bold flex items-center gap-1">
+              <span className="h-2.5 w-2.5 rounded-full bg-success animate-ping" />
+              SAB SAHI HAI (All Operations Normal)
             </span>
-            <span>• 98.2% Operational Efficiency</span>
-            <span>• No Critical Incidents Detected</span>
+            <span className="font-bold">• 98.2% Running Efficiency</span>
+            <span className="font-bold text-amber-500">• 0 Challans Pending</span>
           </div>
         </div>
         <div className="text-right flex flex-col items-end">
-          <div className="rounded-md border border-border bg-card px-3 py-1.5 text-xs font-semibold shadow-sm flex items-center gap-1.5">
-            <Activity className="h-3.5 w-3.5 text-success animate-pulse" />
-            Live Network Connected
+          <div className="rounded border border-border bg-card px-3 py-1 text-xs font-bold tracking-wide uppercase text-accent shadow-sm flex items-center gap-1.5">
+            <Activity className="h-3.5 w-3.5 text-accent animate-pulse" />
+            Wireless Connected [RADIO]
           </div>
-          <span className="text-[10px] text-muted-foreground font-mono mt-1">
+          <span className="text-[10px] text-muted-foreground font-mono mt-1.5">
             {time.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })} • {time.toLocaleTimeString()}
           </span>
         </div>
@@ -111,11 +111,11 @@ export const ExecutiveDashboard: React.FC = () => {
       {/* KPI Cards Grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KPICard
-          title="Active Dispatch Trips"
+          title="Gaddi On Route (Trips)"
           value={activeTrips}
           icon={<Navigation className="h-5 w-5" />}
           trend={{ value: 12, type: 'up' }}
-          comparisonText="vs yesterday active count"
+          comparisonText="active dispatch register"
           progress={78}
           lastUpdated="Updated 3s ago"
           loading={loading}
@@ -125,27 +125,27 @@ export const ExecutiveDashboard: React.FC = () => {
           value={`${utilizationRate}%`}
           icon={<Truck className="h-5 w-5" />}
           trend={{ value: 4, type: 'up' }}
-          comparisonText="active vehicles in operation"
+          comparisonText="trucks on asphalt road"
           progress={utilizationRate}
           lastUpdated="Updated 5s ago"
           loading={loading}
         />
         <KPICard
-          title="Active Roster Drivers"
+          title="Assigned Drivers"
           value={activeDrivers}
           icon={<Users className="h-5 w-5" />}
           trend={{ value: 1, type: 'neutral' }}
-          comparisonText="assigned to active routes"
+          comparisonText="active duty roster"
           progress={84}
           lastUpdated="Updated 1m ago"
           loading={loading}
         />
         <KPICard
-          title="Vehicles in Maintenance"
+          title="Trucks in Garage"
           value={maintenanceVehicles}
           icon={<Wrench className="h-5 w-5" />}
           trend={{ value: 25, type: 'down' }}
-          comparisonText="completed repair orders"
+          comparisonText="ongoing breakdown repairs"
           progress={15}
           lastUpdated="Updated 10m ago"
           loading={loading}
@@ -155,23 +155,23 @@ export const ExecutiveDashboard: React.FC = () => {
       {/* Analytical Charts and Recommendations Grid */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Weekly Trip Load */}
-        <div className="lg:col-span-2 rounded-lg border border-white/[0.06] bg-[#131D2B] p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-4 border-b border-white/[0.04] pb-2">
+        <div className="lg:col-span-2 rounded-lg border border-border bg-card p-5 shadow-sm">
+          <div className="flex items-center justify-between mb-4 border-b border-border pb-2 font-display">
             <div>
-              <h2 className="text-xs font-bold uppercase tracking-wider text-white">Trip Dispatch Volume vs carbon footprint</h2>
+              <h2 className="text-xs font-black uppercase tracking-wider text-foreground">Weekly Freight Load vs Diesel Consumption</h2>
               <div className="flex gap-4 mt-1.5 text-[10px]">
                 <div className="flex items-center gap-1">
                   <span className="h-2 w-2 rounded-full bg-primary" />
-                  <span className="text-muted-foreground">Total Trips: <strong className="text-white font-mono">99</strong></span>
+                  <span className="text-muted-foreground font-bold">Total Trips: <strong className="text-foreground font-mono">99</strong></span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <span className="h-2 w-2 rounded-full bg-cyan-450" style={{ backgroundColor: '#06b6d4' }} />
-                  <span className="text-muted-foreground">Carbon Output: <strong className="text-white font-mono">3,420 kg</strong></span>
+                  <span className="h-2 w-2 rounded-full bg-info" />
+                  <span className="text-muted-foreground font-bold">Estimated Diesel: <strong className="text-foreground font-mono">3,420 Litres</strong></span>
                 </div>
               </div>
             </div>
-            <span className="text-[10px] bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded font-bold flex items-center gap-1.5 shadow-[0_0_10px_rgba(59,130,246,0.05)]">
-              <TrendingUp className="h-3.5 w-3.5" /> Operations Load
+            <span className="text-[10px] bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-[0_0_10px_rgba(234,88,12,0.05)]">
+              <TrendingUp className="h-3.5 w-3.5" /> Road Cargo Load
             </span>
           </div>
           <div className="h-64 w-full">
@@ -179,64 +179,64 @@ export const ExecutiveDashboard: React.FC = () => {
               <AreaChart data={weeklyTripsData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorTrips" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.25} />
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.0} />
+                    <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.25} />
+                    <stop offset="95%" stopColor="var(--primary)" stopOpacity={0.0} />
                   </linearGradient>
                   <linearGradient id="colorCarbon" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.25} />
-                    <stop offset="95%" stopColor="#06b6d4" stopOpacity={0.0} />
+                    <stop offset="5%" stopColor="var(--info)" stopOpacity={0.25} />
+                    <stop offset="95%" stopColor="var(--info)" stopOpacity={0.0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.04)" />
-                <XAxis dataKey="name" stroke="rgba(255,255,255,0.3)" fontSize={10} tickLine={false} />
-                <YAxis stroke="rgba(255,255,255,0.3)" fontSize={10} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(234,88,12,0.08)" />
+                <XAxis dataKey="name" stroke="var(--foreground)" opacity={0.4} fontSize={10} tickLine={false} />
+                <YAxis stroke="var(--foreground)" opacity={0.4} fontSize={10} tickLine={false} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#131D2B',
-                    borderColor: 'rgba(255,255,255,0.08)',
-                    borderRadius: '6px',
-                    color: '#fff',
+                    backgroundColor: 'var(--card)',
+                    borderColor: 'var(--border)',
+                    borderRadius: '4px',
+                    color: 'var(--foreground)',
                     fontSize: '10px',
                     fontFamily: 'JetBrains Mono',
                   }}
                 />
-                <Area type="monotone" dataKey="trips" stroke="#3b82f6" fillOpacity={1} fill="url(#colorTrips)" strokeWidth={2} name="Trips Assigned" />
-                <Area type="monotone" dataKey="carbon" stroke="#06b6d4" fillOpacity={1} fill="url(#colorCarbon)" strokeWidth={1.5} name="CO2 Emission (kg)" />
+                <Area type="monotone" dataKey="trips" stroke="var(--primary)" fillOpacity={1} fill="url(#colorTrips)" strokeWidth={2.5} name="Trips Registry" />
+                <Area type="monotone" dataKey="carbon" stroke="var(--info)" fillOpacity={1} fill="url(#colorCarbon)" strokeWidth={1.5} name="Diesel Used (L)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* AI Command Center Panel */}
-        <div className="rounded-lg border border-primary/25 bg-[#131D2B] p-5 shadow-[0_0_20px_rgba(59,130,246,0.05)] flex flex-col">
-          <div className="flex items-center gap-1.5 mb-3 border-b border-white/[0.06] pb-2">
+        <div className="rounded-lg border border-primary/25 bg-card p-5 shadow-[0_0_20px_rgba(234,88,12,0.05)] flex flex-col font-display">
+          <div className="flex items-center gap-1.5 mb-3 border-b border-border pb-2">
             <Sparkles className="h-4.5 w-4.5 text-primary animate-pulse" />
-            <h2 className="text-xs font-bold uppercase tracking-wider text-primary">AI Command Center</h2>
+            <h2 className="text-xs font-black uppercase tracking-wider text-primary">AI Route & Dhandha Advisory</h2>
           </div>
           <div className="flex-1 space-y-3">
             {aiRecommendations.map(rec => (
-              <div key={rec.id} className="p-3 bg-[#09111D]/80 rounded-lg border border-white/[0.04] space-y-2">
+              <div key={rec.id} className="p-3 bg-background rounded border border-border space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-bold text-white tracking-wide">{rec.type}</span>
-                  <span className="text-[10px] font-mono text-cyan-400 font-semibold">{rec.confidence}% confidence</span>
+                  <span className="text-xs font-black text-foreground tracking-wide uppercase">{rec.type}</span>
+                  <span className="text-[10px] font-mono text-info font-bold">{rec.confidence}% accuracy</span>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-2 text-[10px] pt-1">
-                  <div className="bg-white/[0.02] border border-white/[0.04] rounded p-1.5">
-                    <span className="text-muted-foreground block text-[8px] uppercase tracking-wide">Target Save</span>
-                    <span className="font-semibold text-white">{rec.save}</span>
+                <div className="grid grid-cols-2 gap-2 text-[10px] pt-0.5">
+                  <div className="bg-card border border-border rounded p-1.5">
+                    <span className="text-muted-foreground block text-[8px] uppercase font-bold tracking-wide">Depot Advisory</span>
+                    <span className="font-bold text-foreground">{rec.save}</span>
                   </div>
-                  <div className="bg-white/[0.02] border border-white/[0.04] rounded p-1.5">
-                    <span className="text-muted-foreground block text-[8px] uppercase tracking-wide">Calculated Benefit</span>
-                    <span className="font-semibold text-success font-mono">{rec.benefit}</span>
+                  <div className="bg-card border border-border rounded p-1.5">
+                    <span className="text-muted-foreground block text-[8px] uppercase font-bold tracking-wide">Net Profit</span>
+                    <span className="font-bold text-success font-mono">{rec.benefit}</span>
                   </div>
                 </div>
 
                 <button
                   onClick={() => alert(`Recommendation applied: ${rec.type}`)}
-                  className="w-full mt-2 inline-flex items-center justify-center rounded border border-primary/40 bg-primary/10 hover:bg-primary/20 transition-all py-1 text-[10px] font-bold text-primary shadow-[0_0_10px_rgba(59,130,246,0.1)] active:scale-98"
+                  className="w-full mt-2 inline-flex items-center justify-center rounded border border-primary/40 bg-primary/10 hover:bg-primary/20 transition-all py-1.5 text-[10px] font-bold text-primary shadow-[0_0_10px_rgba(234,88,12,0.1)] active:scale-98 uppercase tracking-wider"
                 >
-                  Accept Dispatch Recommendation
+                  Accept Dispatch Advisory
                 </button>
               </div>
             ))}
@@ -248,42 +248,42 @@ export const ExecutiveDashboard: React.FC = () => {
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Active Trips Center */}
         <div className="lg:col-span-2 space-y-3">
-          <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
+          <h2 className="text-sm font-bold text-foreground flex items-center gap-2 font-display uppercase tracking-wide">
+            <span className="relative flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-success"></span>
             </span>
-            Live Operational Dispatch Center
+            Live Route Dispatch Register (Gaddi Status)
           </h2>
           <div className="space-y-3">
             {trips.length === 0 ? (
-              <div className="rounded-lg border border-white/[0.06] bg-[#131D2B] p-8 text-center text-xs text-muted-foreground">
-                🚛 No Active Trips. Create your first dispatch to begin monitoring.
+              <div className="rounded border border-border bg-card p-8 text-center text-xs text-muted-foreground font-display">
+                🚛 No Active Gaddi Trips. Start a dispatch in the register.
               </div>
             ) : (
               trips.slice(0, 3).map(trip => (
-                <div key={trip.id} className="rounded-lg border border-white/[0.06] bg-[#131D2B] p-4 hover:border-white/[0.12] transition-all flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div key={trip.id} className="rounded border border-border bg-card p-4 hover:border-primary/30 transition-all flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs font-bold text-white tracking-wide">{trip.tripNumber}</span>
+                      <span className="font-mono text-xs font-bold text-foreground tracking-wide">{trip.tripNumber}</span>
                       <StatusBadge status={trip.status} />
                     </div>
                     <p className="text-[11px] text-muted-foreground">
-                      Route: <strong className="text-white font-medium">{trip.origin} ➔ {trip.destination}</strong> ({trip.route})
+                      Highway Route: <strong className="text-foreground font-bold">{trip.origin} ➔ {trip.destination}</strong> ({trip.route})
                     </p>
                     <div className="flex gap-4 text-[10px] text-muted-foreground pt-1">
-                      <span>Driver: <strong className="text-white">{trip.driverName}</strong></span>
-                      <span>Vehicle: <strong className="text-white font-mono">{trip.vehiclePlate}</strong></span>
+                      <span>Driver (Ustad): <strong className="text-foreground font-bold">{trip.driverName}</strong></span>
+                      <span>Gaddi No: <strong className="text-foreground font-mono font-bold">{trip.vehiclePlate}</strong></span>
                     </div>
                   </div>
                   <div className="w-full sm:w-48 space-y-1.5">
                     <div className="flex justify-between text-[10px]">
-                      <span className="text-muted-foreground">Estimated Progress</span>
-                      <span className="font-mono text-white font-semibold">{trip.progress}%</span>
+                      <span className="text-muted-foreground font-bold">Route Progress</span>
+                      <span className="font-mono text-foreground font-bold">{trip.progress}%</span>
                     </div>
-                    <div className="h-1.5 w-full rounded-full bg-white/[0.04] overflow-hidden">
+                    <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
                       <div 
-                        className="h-full bg-gradient-to-r from-primary to-cyan-400 transition-all duration-1000 ease-out animate-pulse" 
+                        className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-1000 ease-out animate-pulse" 
                         style={{ width: `${trip.progress}%` }} 
                       />
                     </div>
@@ -297,18 +297,18 @@ export const ExecutiveDashboard: React.FC = () => {
         {/* Radar Map & Alerts Column */}
         <div className="space-y-6 lg:col-span-1">
           {/* Live Fleet Radar Map */}
-          <div className="rounded-lg border border-white/[0.06] bg-[#131D2B] p-5 shadow-sm space-y-3">
-            <div className="flex items-center justify-between border-b border-white/[0.04] pb-2">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-1.5">
-                <Activity className="h-4 w-4 text-success animate-pulse" /> Live Fleet Radar
+          <div className="rounded border border-border bg-card p-5 shadow-sm space-y-3 font-display">
+            <div className="flex items-center justify-between border-b border-border pb-2">
+              <h2 className="text-xs font-black uppercase tracking-wider text-foreground flex items-center gap-1.5">
+                <Activity className="h-4 w-4 text-success animate-pulse" /> Highway Gaddi Radar
               </h2>
               <span className="text-[9px] bg-success/10 text-success border border-success/35 px-1.5 py-0.5 rounded font-mono font-bold animate-pulse">
-                LIVE FPS: 60
+                RADIO FEED
               </span>
             </div>
             
             {/* SVG Interactive Map */}
-            <div className="relative h-44 rounded-lg bg-[#09111D] border border-white/[0.04] overflow-hidden flex items-center justify-center">
+            <div className="relative h-44 rounded bg-background border border-border overflow-hidden flex items-center justify-center">
               {/* Radar circular lines */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
                 <div className="w-12 h-12 rounded-full border border-primary animate-ping" />
@@ -317,39 +317,39 @@ export const ExecutiveDashboard: React.FC = () => {
               </div>
 
               {/* Animated Map Routes */}
-              <svg className="absolute inset-0 h-full w-full stroke-white/[0.05] fill-none" xmlns="http://www.w3.org/2000/svg">
+              <svg className="absolute inset-0 h-full w-full stroke-foreground/[0.08] fill-none" xmlns="http://www.w3.org/2000/svg">
                 {/* Routes */}
-                <path d="M 20 20 L 80 50 L 150 30 L 220 90 L 280 120" strokeWidth="1" />
-                <path d="M 50 140 L 120 100 L 150 30 L 250 20" strokeWidth="1" strokeDasharray="3 3" />
-                <path d="M 10 90 Q 90 120 180 80 T 300 20" strokeWidth="1" />
+                <path d="M 20 20 L 80 50 L 150 30 L 220 90 L 280 120" strokeWidth="1.5" />
+                <path d="M 50 140 L 120 100 L 150 30 L 250 20" strokeWidth="1.5" strokeDasharray="3 3" />
+                <path d="M 10 90 Q 90 120 180 80 T 300 20" strokeWidth="1.5" />
 
                 {/* Moving Trucks represented as green/cyan dots */}
-                <circle r="3" fill="#22c55e">
+                <circle r="3.5" fill="var(--success)">
                   <animateMotion dur="8s" repeatCount="indefinite" path="M 20 20 L 80 50 L 150 30 L 220 90 L 280 120" />
                 </circle>
-                <circle r="2.5" fill="#06b6d4">
+                <circle r="3" fill="var(--info)">
                   <animateMotion dur="11s" begin="2s" repeatCount="indefinite" path="M 50 140 L 120 100 L 150 30 L 250 20" />
                 </circle>
-                <circle r="3" fill="#3b82f6">
+                <circle r="3.5" fill="var(--primary)">
                   <animateMotion dur="9s" repeatCount="indefinite" path="M 10 90 Q 90 120 180 80 T 300 20" />
                 </circle>
               </svg>
               
-              <span className="absolute bottom-2 left-2 text-[9px] font-mono text-muted-foreground">
-                Fleet Tracking Grid • Delhi-Mumbai Hwy
+              <span className="absolute bottom-2 left-2 text-[9px] font-mono text-muted-foreground font-bold">
+                Golden Quadrilateral Hwy Grid
               </span>
             </div>
           </div>
 
           {/* Critical Alerts Center */}
-          <div className="rounded-lg border border-white/[0.06] bg-[#131D2B] p-5 shadow-sm">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-destructive mb-3 flex items-center gap-1.5">
-              <AlertTriangle className="h-4 w-4 text-destructive animate-bounce" /> Critical Alerts
+          <div className="rounded border border-border bg-card p-5 shadow-sm font-display">
+            <h2 className="text-xs font-black uppercase tracking-wider text-destructive mb-3 flex items-center gap-1.5">
+              <AlertTriangle className="h-4 w-4 text-destructive animate-bounce" /> Critical Road Warnings
             </h2>
             <div className="space-y-3">
               {notifications.slice(0, 3).map(n => (
-                <div key={n.id} className="border-l-2 border-destructive bg-destructive/5 pl-3 py-1.5 rounded-r space-y-0.5 border-y border-r border-white/[0.02]">
-                  <p className="text-xs font-bold text-white tracking-wide">{n.title}</p>
+                <div key={n.id} className="border-l-4 border-destructive bg-destructive/5 pl-3 py-2 rounded-r space-y-0.5 border-y border-r border-border">
+                  <p className="text-xs font-bold text-foreground tracking-wide uppercase">{n.title}</p>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">{n.message}</p>
                 </div>
               ))}
