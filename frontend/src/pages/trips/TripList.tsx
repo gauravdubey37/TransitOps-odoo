@@ -4,7 +4,7 @@ import { api } from '../../lib/api';
 import { Trip, Driver, Vehicle } from '../../types';
 import { DataTable } from '../../components/shared/DataTable';
 import { StatusBadge } from '../../components/shared/StatusBadge';
-import { Navigation, Plus, MapPin, Calendar, Clock, Sparkles } from 'lucide-react';
+import { Navigation, Plus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
