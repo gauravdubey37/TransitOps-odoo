@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
-import { Trip, Vehicle, Driver, Notification } from '../../types';
+import type { Trip, Vehicle, Driver, Notification } from '../../types';
 import { KPICard } from '../../components/shared/KPICard';
 import { DataTable } from '../../components/shared/DataTable';
 import { StatusBadge } from '../../components/shared/StatusBadge';
