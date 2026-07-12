@@ -97,3 +97,34 @@ The backend guarantees reliability through comprehensive integration testing:
    ```bash
    npm test
    ```
+
+## API Integration Guide (For Frontend & Microservices)
+
+To integrate seamlessly with this backend, use the following guidelines:
+
+### Base URL
+All operational REST endpoints are prefixed with `/api/v1/`.
+
+### Authentication
+Every endpoint (except login) requires a JWT passed in the Authorization header:
+```http
+Authorization: Bearer <your_jwt_token>
+```
+
+### Module Endpoints Overview
+Here are the base routes for all modules available for consumption:
+- `POST /api/v1/auth/login` - Authenticate and get JWT
+- `GET/POST /api/v1/depots` - Depot Management
+- `GET/POST /api/v1/routes` - Route Management
+- `GET/POST /api/v1/vehicles` - Fleet Management
+- `GET/POST /api/v1/drivers` - Driver Profiles
+- `GET/POST /api/v1/trips` - Trip Dispatch and Execution
+- `GET/POST /api/v1/fuel` - Fuel Logging
+- `GET/POST /api/v1/expenses` - Trip Expenses
+- `GET/POST /api/v1/maintenance` - Fleet Repair Logs
+- `GET /api/v1/dashboard` - High-performance Executive KPI Aggregation
+- `GET/POST /api/v1/notifications` - System Alerts
+- `GET /api/v1/analytics/*` - Read-only operational data for AI engines
+- `POST /api/v1/voice/intent` - NLP intent parsing proxy
+
+All responses follow a standard `{ success: true, data: {...}, message: "..." }` structural format to guarantee predictable parsing on the frontend.
