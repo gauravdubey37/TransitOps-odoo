@@ -14,6 +14,7 @@ import driverRoutes from './modules/driver/routes';
 import vehicleRoutes from './modules/vehicle/routes';
 import tripRoutes from './modules/trip/routes';
 import depotRoutes from './modules/depot/routes';
+import routeRoutes from './modules/route/routes';
 
 // Base Route
 app.get('/api/v1/health', (req, res) => {
@@ -28,6 +29,7 @@ app.use('/api/v1/drivers', driverRoutes);
 app.use('/api/v1/vehicles', vehicleRoutes);
 app.use('/api/v1/trips', tripRoutes);
 app.use('/api/v1/depots', depotRoutes);
+app.use('/api/v1/routes', routeRoutes);
 
 // Error handling middleware MUST be last
 app.use(errorMiddleware);
