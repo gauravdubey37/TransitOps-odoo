@@ -155,31 +155,53 @@ export const ExecutiveDashboard: React.FC = () => {
       {/* Analytical Charts and Recommendations Grid */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Weekly Trip Load */}
-        <div className="lg:col-span-2 rounded-lg border border-border bg-card p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
+        <div className="lg:col-span-2 rounded-lg border border-white/[0.06] bg-[#131D2B] p-5 shadow-sm">
+          <div className="flex items-center justify-between mb-4 border-b border-white/[0.04] pb-2">
             <div>
-              <h2 className="text-sm font-semibold text-foreground">Trip Dispatch Load & Carbon Impact</h2>
-              <p className="text-[10px] text-muted-foreground">Trips completed versus carbon emissions footprint.</p>
+              <h2 className="text-xs font-bold uppercase tracking-wider text-white">Trip Dispatch Volume vs carbon footprint</h2>
+              <div className="flex gap-4 mt-1.5 text-[10px]">
+                <div className="flex items-center gap-1">
+                  <span className="h-2 w-2 rounded-full bg-primary" />
+                  <span className="text-muted-foreground">Total Trips: <strong className="text-white font-mono">99</strong></span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="h-2 w-2 rounded-full bg-cyan-450" style={{ backgroundColor: '#06b6d4' }} />
+                  <span className="text-muted-foreground">Carbon Output: <strong className="text-white font-mono">3,420 kg</strong></span>
+                </div>
+              </div>
             </div>
-            <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded font-semibold flex items-center">
-              <TrendingUp className="h-3 w-3 mr-1" /> Weekly Report
+            <span className="text-[10px] bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded font-bold flex items-center gap-1.5 shadow-[0_0_10px_rgba(59,130,246,0.05)]">
+              <TrendingUp className="h-3.5 w-3.5" /> Operations Load
             </span>
           </div>
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={weeklyTripsData}>
+              <AreaChart data={weeklyTripsData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorTrips" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#2563eb" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.25} />
+                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.0} />
+                  </linearGradient>
+                  <linearGradient id="colorCarbon" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.25} />
+                    <stop offset="95%" stopColor="#06b6d4" stopOpacity={0.0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="name" stroke="#64748b" fontSize={11} />
-                <YAxis stroke="#64748b" fontSize={11} />
-                <Tooltip />
-                <Area type="monotone" dataKey="trips" stroke="#2563eb" fillOpacity={1} fill="url(#colorTrips)" strokeWidth={2} name="Trips" />
-                <Area type="monotone" dataKey="carbon" stroke="#0891b2" fillOpacity={0} strokeWidth={1.5} name="Carbon (kg)" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.04)" />
+                <XAxis dataKey="name" stroke="rgba(255,255,255,0.3)" fontSize={10} tickLine={false} />
+                <YAxis stroke="rgba(255,255,255,0.3)" fontSize={10} tickLine={false} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#131D2B',
+                    borderColor: 'rgba(255,255,255,0.08)',
+                    borderRadius: '6px',
+                    color: '#fff',
+                    fontSize: '10px',
+                    fontFamily: 'JetBrains Mono',
+                  }}
+                />
+                <Area type="monotone" dataKey="trips" stroke="#3b82f6" fillOpacity={1} fill="url(#colorTrips)" strokeWidth={2} name="Trips Assigned" />
+                <Area type="monotone" dataKey="carbon" stroke="#06b6d4" fillOpacity={1} fill="url(#colorCarbon)" strokeWidth={1.5} name="CO2 Emission (kg)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
