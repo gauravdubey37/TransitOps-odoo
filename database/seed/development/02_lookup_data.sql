@@ -51,12 +51,12 @@ INSERT INTO expense_categories (category_id, category_name) VALUES
 ON CONFLICT (category_name) DO NOTHING;
 
 INSERT INTO notification_types (notification_type_id, type_name) VALUES
-    ('g0000000-0000-4000-8000-000000000001', 'Maintenance Due'),
-    ('g0000000-0000-4000-8000-000000000002', 'Insurance Expiry'),
-    ('g0000000-0000-4000-8000-000000000003', 'License Expiry'),
-    ('g0000000-0000-4000-8000-000000000004', 'PUC Expiry'),
-    ('g0000000-0000-4000-8000-000000000005', 'Trip Assigned'),
-    ('g0000000-0000-4000-8000-000000000006', 'Trip Completed'),
-    ('g0000000-0000-4000-8000-000000000007', 'Fatigue Alert'),
-    ('g0000000-0000-4000-8000-000000000008', 'System Alert')
+    ('90000000-0000-4000-8000-000000000001', 'Maintenance Due'),
+    ('90000000-0000-4000-8000-000000000002', 'Insurance Expiry'),
+    ('90000000-0000-4000-8000-000000000003', 'License Expiry'),
+    ('90000000-0000-4000-8000-000000000004', 'PUC Expiry'),
+    ('90000000-0000-4000-8000-000000000005', 'Trip Assigned'),
+    ('90000000-0000-4000-8000-000000000006', 'Trip Completed'),
+    ('90000000-0000-4000-8000-000000000007', 'Fatigue Alert'),
+    ('90000000-0000-4000-8000-000000000008', 'System Alert')
 ON CONFLICT (type_name) DO NOTHING;
