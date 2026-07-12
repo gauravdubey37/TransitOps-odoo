@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api';
-import { Mic, MicOff, Send, MessageSquare, Play, Sparkles } from 'lucide-react';
+import { Mic, MicOff, MessageSquare, Sparkles } from 'lucide-react';
 
 export const DriverVoice: React.FC = () => {
   const queryClient = useQueryClient();
   const [recording, setRecording] = useState(false);
   const [transcript, setTranscript] = useState('');
-  const [responseMessage, setResponseMessage] = useState('');
   const [history, setHistory] = useState<{ id: number; text: string; sender: 'driver' | 'ai' }[]>([
     { id: 1, text: "Hello! Press the microphone button and state your command (e.g. 'Log toll expense 320 INR').", sender: 'ai' },
   ]);
