@@ -294,18 +294,66 @@ export const ExecutiveDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Critical Alerts Center */}
-        <div className="rounded-lg border border-border bg-card p-5 shadow-sm">
-          <h2 className="text-sm font-semibold mb-3 flex items-center text-destructive">
-            <AlertTriangle className="h-4 w-4 mr-1.5" /> Critical Alerts
-          </h2>
-          <div className="space-y-3">
-            {notifications.slice(0, 3).map(n => (
-              <div key={n.id} className="border-l-2 border-destructive pl-3 py-1 space-y-0.5">
-                <p className="text-xs font-semibold text-foreground">{n.title}</p>
-                <p className="text-[11px] text-muted-foreground leading-relaxed">{n.message}</p>
+        {/* Radar Map & Alerts Column */}
+        <div className="space-y-6 lg:col-span-1">
+          {/* Live Fleet Radar Map */}
+          <div className="rounded-lg border border-white/[0.06] bg-[#131D2B] p-5 shadow-sm space-y-3">
+            <div className="flex items-center justify-between border-b border-white/[0.04] pb-2">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-1.5">
+                <Activity className="h-4 w-4 text-success animate-pulse" /> Live Fleet Radar
+              </h2>
+              <span className="text-[9px] bg-success/10 text-success border border-success/35 px-1.5 py-0.5 rounded font-mono font-bold animate-pulse">
+                LIVE FPS: 60
+              </span>
+            </div>
+            
+            {/* SVG Interactive Map */}
+            <div className="relative h-44 rounded-lg bg-[#09111D] border border-white/[0.04] overflow-hidden flex items-center justify-center">
+              {/* Radar circular lines */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                <div className="w-12 h-12 rounded-full border border-primary animate-ping" />
+                <div className="w-24 h-24 rounded-full border border-primary/40" />
+                <div className="w-36 h-36 rounded-full border border-primary/20" />
               </div>
-            ))}
+
+              {/* Animated Map Routes */}
+              <svg className="absolute inset-0 h-full w-full stroke-white/[0.05] fill-none" xmlns="http://www.w3.org/2000/svg">
+                {/* Routes */}
+                <path d="M 20 20 L 80 50 L 150 30 L 220 90 L 280 120" strokeWidth="1" />
+                <path d="M 50 140 L 120 100 L 150 30 L 250 20" strokeWidth="1" strokeDasharray="3 3" />
+                <path d="M 10 90 Q 90 120 180 80 T 300 20" strokeWidth="1" />
+
+                {/* Moving Trucks represented as green/cyan dots */}
+                <circle r="3" fill="#22c55e">
+                  <animateMotion dur="8s" repeatCount="indefinite" path="M 20 20 L 80 50 L 150 30 L 220 90 L 280 120" />
+                </circle>
+                <circle r="2.5" fill="#06b6d4">
+                  <animateMotion dur="11s" begin="2s" repeatCount="indefinite" path="M 50 140 L 120 100 L 150 30 L 250 20" />
+                </circle>
+                <circle r="3" fill="#3b82f6">
+                  <animateMotion dur="9s" repeatCount="indefinite" path="M 10 90 Q 90 120 180 80 T 300 20" />
+                </circle>
+              </svg>
+              
+              <span className="absolute bottom-2 left-2 text-[9px] font-mono text-muted-foreground">
+                Fleet Tracking Grid • Delhi-Mumbai Hwy
+              </span>
+            </div>
+          </div>
+
+          {/* Critical Alerts Center */}
+          <div className="rounded-lg border border-white/[0.06] bg-[#131D2B] p-5 shadow-sm">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-destructive mb-3 flex items-center gap-1.5">
+              <AlertTriangle className="h-4 w-4 text-destructive animate-bounce" /> Critical Alerts
+            </h2>
+            <div className="space-y-3">
+              {notifications.slice(0, 3).map(n => (
+                <div key={n.id} className="border-l-2 border-destructive bg-destructive/5 pl-3 py-1.5 rounded-r space-y-0.5 border-y border-r border-white/[0.02]">
+                  <p className="text-xs font-bold text-white tracking-wide">{n.title}</p>
+                  <p className="text-[10px] text-muted-foreground leading-relaxed">{n.message}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
