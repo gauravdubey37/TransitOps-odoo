@@ -16,8 +16,6 @@ import {
   Activity,
 } from 'lucide-react';
 import {
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -25,9 +23,6 @@ import {
   ResponsiveContainer,
   AreaChart,
   Area,
-  PieChart,
-  Pie,
-  Cell,
 } from 'recharts';
 
 export const ExecutiveDashboard: React.FC = () => {
@@ -55,7 +50,6 @@ export const ExecutiveDashboard: React.FC = () => {
   const loading = tripsLoading || vehiclesLoading || driversLoading || alertsLoading;
 
   // Compute metrics
-  const totalTrips = trips.length;
   const activeTrips = trips.filter(t => t.status === 'Assigned' || t.status === 'In Transit').length;
   const totalVehicles = vehicles.length;
   const availableVehicles = vehicles.filter(v => v.status === 'Available').length;
@@ -74,12 +68,6 @@ export const ExecutiveDashboard: React.FC = () => {
     { name: 'Fri', trips: 22, carbon: 730 },
     { name: 'Sat', trips: 10, carbon: 350 },
     { name: 'Sun', trips: 8, carbon: 280 },
-  ];
-
-  const vehicleStatusData = [
-    { name: 'Available', value: availableVehicles, color: '#16a34a' },
-    { name: 'Assigned', value: totalVehicles - availableVehicles - maintenanceVehicles, color: '#0891b2' },
-    { name: 'Maintenance', value: maintenanceVehicles, color: '#dc2626' },
   ];
 
   const activeTripColumns = [
