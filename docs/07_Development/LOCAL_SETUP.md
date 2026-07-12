@@ -1,0 +1,227 @@
+# TransitOps Local Setup Guide
+
+Version: 1.0
+
+Status: Implementation Guide
+
+Last Updated: 2026-07-12
+
+---
+
+# Purpose
+
+This guide describes how to run TransitOps infrastructure locally on **Windows**, **macOS**, or **Linux**.
+
+The recommended approach uses **Docker** for PostgreSQL and Neo4j. You do not need to install databases manually on your machine.
+
+---
+
+# Prerequisites
+
+| Tool | Required | Notes |
+|------|----------|-------|
+| Docker Desktop | Yes | PostgreSQL 16 + Neo4j 5 run in containers |
+| Git | Yes | Clone the repository |
+| PowerShell | Windows | For `scripts/setup.ps1` |
+| Git Bash or WSL | Optional | For `.sh` scripts on Windows |
+
+Backend, frontend, and analytics application code are developed on separate branches and are not required for database-only setup.
+
+---
+
+# Quick Start (Windows — Recommended)
+
+Open PowerShell in the project root and run:
+
+```powershell
+.\scripts\setup.ps1
+```
+
+This single command will:
+
+1. Create `.env` from `.env.example` (if missing)
+2. Start PostgreSQL and Neo4j containers
+3. Wait for databases to become healthy
+4. Run all PostgreSQL migrations
+5. Load development seed data
+6. Create the default admin user
+
+Default admin login after setup:
+
+| Field | Value |
+|-------|-------|
+| Email | `admin@transitops.local` |
+| Password | Value of `ADMIN_PASSWORD` in `.env` (default: `changeme`) |
+
+---
+
+# Quick Start (macOS / Linux)
+
+```bash
+cp .env.example .env
+./scripts/start.sh db
+./scripts/db-migrate.sh
+./scripts/db-seed.sh
+./scripts/health-check.sh
+```
+
+---
+
+# Environment Configuration
+
+Copy the template once:
+
+```powershell
+copy .env.example .env
+```
+
+## Docker setup (default)
+
+When using Docker, database containers expose ports to your machine. Use these values in `.env` when running migration or seed scripts **from your host** (outside containers):
+
+```
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+DATABASE_URL=postgresql://transitops:transitops_dev@localhost:5432/transitops
+NEO4J_HOST=localhost
+NEO4J_URI=bolt://localhost:7687
+```
+
+The `setup.ps1` script handles this automatically.
+
+## Optional changes
+
+| Variable | Purpose |
+|----------|---------|
+| `ADMIN_EMAIL` | Default administrator email |
+| `ADMIN_PASSWORD` | Default administrator password |
+| `JWT_SECRET` | Change for non-local environments |
+| `SEED_PROFILE` | `development` (default), `demo`, `testing` |
+
+Never commit `.env` to version control.
+
+---
+
+# Manual Docker Commands
+
+Start databases only:
+
+```powershell
+docker compose -f docker/docker-compose.yml up -d postgres neo4j
+```
+
+Stop databases:
+
+```powershell
+docker compose -f docker/docker-compose.yml down
+```
+
+View logs:
+
+```powershell
+docker compose -f docker/docker-compose.yml logs -f postgres
+```
+
+Check container status:
+
+```powershell
+docker compose -f docker/docker-compose.yml ps
+```
+
+---
+
+# Service URLs
+
+| Service | URL | Status |
+|---------|-----|--------|
+| PostgreSQL | `localhost:5432` | Implemented |
+| Neo4j Browser | `http://localhost:7474` | Implemented |
+| Neo4j Bolt | `bolt://localhost:7687` | Implemented |
+| Backend API | `http://localhost:5001` | Pending (backend branch) |
+| Analytics API | `http://localhost:8000` | Pending (analytics branch) |
+| Frontend | `http://localhost:3000` | Pending (frontend branch) |
+
+---
+
+# Database Scripts
+
+| Script | Platform | Description |
+|--------|----------|-------------|
+| `scripts/setup.ps1` | Windows | Full one-command setup |
+| `scripts/start.sh` | Bash | Start Docker services |
+| `scripts/stop.sh` | Bash | Stop Docker services |
+| `scripts/db-migrate.sh` | Bash | Run PostgreSQL migrations |
+| `scripts/db-seed.sh` | Bash | Load seed data |
+| `scripts/db-reset.sh` | Bash | Drop, recreate, migrate, seed |
+| `scripts/db-backup.sh` | Bash | Backup PostgreSQL |
+| `scripts/health-check.sh` | Bash | Verify service health |
+| `database/scripts/migrate.sh` | Bash | Migration runner (used internally) |
+| `database/scripts/seed.sh` | Bash | Seed loader (used internally) |
+| `database/scripts/validate.sh` | Bash | Schema validation |
+| `database/scripts/neo4j-migrate.sh` | Bash | Neo4j constraints and indexes |
+
+---
+
+# Verify Installation
+
+After setup, confirm PostgreSQL is running:
+
+```powershell
+docker exec transitops-postgres psql -U transitops -d transitops -c "SELECT COUNT(*) FROM roles;"
+```
+
+Expected result: `5` roles.
+
+Confirm migrations applied:
+
+```powershell
+docker exec transitops-postgres psql -U transitops -d transitops -c "SELECT COUNT(*) FROM schema_migrations;"
+```
+
+Expected result: `29` migrations.
+
+---
+
+# Troubleshooting
+
+## Docker Desktop not running
+
+```
+error during connect: open //./pipe/dockerDesktopLinuxEngine
+```
+
+Start Docker Desktop and wait until it is fully running, then retry.
+
+## Port already in use
+
+If port `5432` or `7474` is taken, change `POSTGRES_PORT` or `NEO4J_HTTP_PORT` in `.env` and update `docker-compose.dev.yml` port mappings.
+
+## Migrations fail on fresh install
+
+Ensure containers are healthy before migrating:
+
+```powershell
+docker exec transitops-postgres pg_isready -U transitops
+```
+
+## Reset everything
+
+```powershell
+docker compose -f docker/docker-compose.yml down -v
+.\scripts\setup.ps1
+```
+
+The `-v` flag removes persistent volumes and gives you a clean database.
+
+---
+
+# Related Documentation
+
+- `docs/03_Database/MIGRATIONS.md` — Migration strategy and file list
+- `docs/03_Database/SEED_DATA.md` — Seed data specification
+- `docker/README.md` — Docker configuration details
+- `docs/07_Development/GIT_WORKFLOW.md` — Branch workflow
+
+---
+
+# End of Document
