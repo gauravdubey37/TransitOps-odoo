@@ -1,22 +1,34 @@
 from fastapi import APIRouter
 from src.voice.intent_parser import voice_intent_parser
 from pydantic import BaseModel
+from typing import Dict, Any
 
 router = APIRouter(prefix="/voice", tags=["Voice"])
 
-class VoiceCommandRequest(BaseModel):
-    transcript: str
-    context_data: dict = {}
+class VoiceIntentRequest(BaseModel):
+    payload: str
 
-@router.post("/process")
-def process_voice_command(req: VoiceCommandRequest):
-    intent_data = voice_intent_parser.parse_voice_command(req.transcript)
-    
-    # Generate the text response
-    response_text = voice_intent_parser.generate_voice_response(intent_data["intent"], req.context_data)
+class VoiceConfirmRequest(BaseModel):
+    intent: str
+    data: Dict[str, Any]
+
+@router.post("/intent")
+def parse_voice_intent(req: VoiceIntentRequest):
+    intent_data = voice_intent_parser.parse_voice_command(req.payload)
     
     return {
         "intent": intent_data["intent"],
-        "requires_confirmation": intent_data["requires_confirmation"],
-        "response_text": response_text
+        "confidence": 0.95,  # Mocking confidence for now
+        "entities": {},      # Mocking entities for now
+        "raw_text": req.payload
     }
+
+@router.post("/confirm")
+def confirm_voice_action(req: VoiceConfirmRequest):
+    # Process confirmation logic here
+    return True
+
+@router.get("/tasks")
+def get_voice_tasks():
+    # Return mock tasks to align with backend expectations
+    return []
