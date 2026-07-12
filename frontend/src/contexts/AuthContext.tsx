@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { User } from '../types';
+import type { User } from '../types';
 
 interface AuthContextType {
   user: User | null;
@@ -62,7 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Direct mapping rules based on our Design System / Business Rules
     if (module === 'Settings') {
-      return user.role === 'Administrator';
+      return false; // Administrator is handled above; other roles cannot view settings
     }
     
     if (module === 'Drivers' || module === 'Vehicles') {
