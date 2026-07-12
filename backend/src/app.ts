@@ -10,6 +10,8 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+import driverRoutes from './modules/driver/routes';
+
 // Base Route
 app.get('/api/v1/health', (req, res) => {
   res.json({
@@ -17,6 +19,9 @@ app.get('/api/v1/health', (req, res) => {
     message: 'TransitOps Backend API is running'
   });
 });
+
+// Module Routes
+app.use('/api/v1/drivers', driverRoutes);
 
 // Error handling middleware MUST be last
 app.use(errorMiddleware);
