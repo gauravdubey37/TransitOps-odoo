@@ -1,17 +1,17 @@
 import logging
-from src.core.postgres_client import postgres_client
+from src.core.backend_client import backend_client
 from src.core.neo4j_client import neo4j_client
 
 logger = logging.getLogger(__name__)
 
 class GraphSynchronizer:
     """
-    Synchronizes transactional data from PostgreSQL to analytical Neo4j Graph.
+    Synchronizes transactional data from Backend APIs to analytical Neo4j Graph.
     This handles Initial Sync and Incremental Sync.
     """
     
     def __init__(self):
-        self.pg = postgres_client
+        self.backend = backend_client
         self.neo4j = neo4j_client
 
     def run_full_sync(self):
