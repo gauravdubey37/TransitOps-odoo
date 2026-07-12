@@ -1,0 +1,119 @@
+name: CI
+
+on:
+  push:
+    branches: [main, infrastructure, backend, frontend, analytics]
+  pull_request:
+    branches: [main]
+
+jobs:
+  infrastructure:
+    name: Infrastructure Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Docker Compose
+        run: docker compose -f docker/docker-compose.yml config
+
+      - name: Validate Dev Compose
+        run: docker compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml config
+
+      - name: Validate environment template
+        run: test -f .env.example
+
+      - name: Validate migration files exist
+        run: |
+          count=$(find database/migrations/postgres -name "*.sql" | wc -l)
+          echo "Found ${count} PostgreSQL migrations"
+          test "${count}" -gt 0
+
+      - name: Validate rollback files exist
+        run: |
+          for f in database/migrations/postgres/*.sql; do
+            base=$(basename "$f" .sql)
+            test -f "database/migrations/rollbacks/postgres/${base}.sql"
+          done
+
+      - name: Validate seed files exist
+        run: test -d database/seed/development
+
+      - name: Validate scripts exist
+        run: |
+          test -f scripts/start.sh
+          test -f scripts/db-migrate.sh
+          test -f database/scripts/migrate.sh
+
+  database:
+    name: Database Migrations
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: transitops
+          POSTGRES_USER: transitops
+          POSTGRES_PASSWORD: transitops_dev
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run migrations
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: transitops
+          POSTGRES_USER: transitops
+          POSTGRES_PASSWORD: transitops_dev
+        run: bash database/scripts/migrate.sh
+
+      - name: Run seed data
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: transitops
+          POSTGRES_USER: transitops
+          POSTGRES_PASSWORD: transitops_dev
+          ADMIN_PASSWORD: testpassword
+        run: bash database/scripts/seed.sh
+
+      - name: Validate schema
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: transitops
+          POSTGRES_USER: transitops
+          POSTGRES_PASSWORD: transitops_dev
+        run: bash database/scripts/validate.sh
+
+  docker:
+    name: Docker Build Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start database containers
+        run: docker compose -f docker/docker-compose.yml up -d postgres neo4j
+
+      - name: Wait for PostgreSQL
+        run: |
+          for i in $(seq 1 30); do
+            docker exec transitops-postgres pg_isready -U transitops && exit 0
+            sleep 2
+          done
+          exit 1
+
+      - name: Verify PostgreSQL extensions
+        run: |
+          docker exec transitops-postgres psql -U transitops -d transitops -c "SELECT extname FROM pg_extension WHERE extname IN ('uuid-ossp', 'pgcrypto');"
+
+      - name: Cleanup
+        if: always()
+        run: docker compose -f docker/docker-compose.yml down -v
