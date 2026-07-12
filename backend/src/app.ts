@@ -12,6 +12,7 @@ app.use(express.json());
 
 import driverRoutes from './modules/driver/routes';
 import vehicleRoutes from './modules/vehicle/routes';
+import tripRoutes from './modules/trip/routes';
 
 // Base Route
 app.get('/api/v1/health', (req, res) => {
@@ -24,6 +25,7 @@ app.get('/api/v1/health', (req, res) => {
 // Module Routes
 app.use('/api/v1/drivers', driverRoutes);
 app.use('/api/v1/vehicles', vehicleRoutes);
+app.use('/api/v1/trips', tripRoutes);
 
 // Error handling middleware MUST be last
 app.use(errorMiddleware);
